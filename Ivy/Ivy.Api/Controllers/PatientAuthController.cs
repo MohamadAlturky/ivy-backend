@@ -107,7 +107,8 @@ public class PatientAuthController : BaseController
                 var patientDto = MapToPatientDto(result.Data);
                 var token = _jwtService.GenerateToken(
                     result.Data.User.Id,
-                    result.Data.User.UserName
+                    result.Data.User.UserName,
+                    "patient"
                 );
                 var responseDto = new AuthResponseDto
                 {
@@ -156,7 +157,8 @@ public class PatientAuthController : BaseController
                 var patientDto = MapToPatientDto(result.Data);
                 var token = _jwtService.GenerateToken(
                     result.Data.User.Id,
-                    result.Data.User.UserName
+                    result.Data.User.UserName,
+                    "patient"
                 );
                 var responseDto = new AuthResponseDto
                 {

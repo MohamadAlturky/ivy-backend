@@ -15,7 +15,7 @@ public class JwtService
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string GenerateToken(int userId, string userName)
+    public string GenerateToken(int userId, string userName, string role)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
@@ -24,6 +24,7 @@ public class JwtService
         {
             new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
             new Claim(ClaimTypes.Name, userName),
+            new Claim(ClaimTypes.Role, role),
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
