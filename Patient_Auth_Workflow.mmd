@@ -1,0 +1,59 @@
+graph TD
+    A["Patient Opens App"] --> B{New User?}
+    
+    %% Registration Flow
+    B -->|Yes| C["POST /api/patient-auth/register<br/>firstName, lastName, password, phone, etc."]
+    C --> D{Registration<br/>Successful?}
+    D -->|No| E["Show Error<br/>Phone/Username exists"]
+    D -->|Yes| F["OTP Sent<br/>Account Created (Inactive)"]
+    F --> G["POST /api/patient-auth/verify-otp<br/>phoneNumber + otp"]
+    G --> H{OTP Valid?}
+    H -->|No| I["Show OTP Error"]
+    H -->|Yes| J["Account Activated<br/>JWT Token Generated"]
+    
+    %% Login Flow
+    B -->|No| K["POST /api/patient-auth/login<br/>phoneNumber + password"]
+    K --> L{Login<br/>Successful?}
+    L -->|No| M["Show Login Error"]
+    L -->|Yes| N{Account<br/>Verified?}
+    N -->|No| O["Redirect to OTP Verification"]
+    O --> G
+    N -->|Yes| J
+    
+    %% Forgot Password Flow
+    M --> P{Forgot Password?}
+    P -->|Yes| Q["POST /api/patient-auth/forgot-password<br/>phoneNumber"]
+    Q --> R{Phone<br/>Exists?}
+    R -->|No| S["Phone not registered"]
+    R -->|Yes| T["OTP Sent for Password Reset"]
+    T --> U["POST /api/patient-auth/reset-password<br/>phoneNumber + otp + newPassword"]
+    U --> V{Reset<br/>Successful?}
+    V -->|No| W["Show Reset Error"]
+    V -->|Yes| X["Password Reset Complete"]
+    X --> K
+    
+    %% Authenticated Access
+    J --> Y["JWT Token Stored"]
+    Y --> Z["Access Protected Routes"]
+    Z --> AA["GET /api/patient-auth/my-profile<br/>Authorization: Bearer token"]
+    AA --> BB{Token Valid?}
+    BB -->|No| CC["401 Unauthorized<br/>Redirect to Login"]
+    BB -->|Yes| DD["Return Patient Profile"]
+    
+    %% Error Handling
+    E --> B
+    I --> F
+    S --> P
+    W --> T
+    CC --> K
+    
+    %% Styling
+    classDef success fill:#d4edda,stroke:#28a745,color:#000
+    classDef error fill:#f8d7da,stroke:#dc3545,color:#000
+    classDef process fill:#fff3cd,stroke:#ffc107,color:#000
+    classDef endpoint fill:#e3f2fd,stroke:#2196f3,color:#000
+    
+    class J,DD,X success
+    class E,I,M,S,W,CC error
+    class F,T,Y process
+    class C,G,K,Q,U,AA endpoint
