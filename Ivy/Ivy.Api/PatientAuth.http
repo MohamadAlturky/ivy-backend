@@ -1,0 +1,42 @@
+### Patient Authentication API Tests
+
+### 1. Register a new patient
+POST {{host}}/api/patient-auth/register
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "middleName": "Michael",
+  "lastName": "Doe",
+  "userName": "johndoe123",
+  "password": "SecurePassword123",
+  "phoneNumber": "+1234567890",
+  "gender": 1,
+  "dateOfBirth": "1990-05-15T00:00:00Z"
+}
+
+### 2. Verify OTP (use the OTP returned from registration)
+POST {{host}}/api/patient-auth/verify-otp
+Content-Type: application/json
+
+{
+  "phoneNumber": "+1234567890",
+  "otp": "123456"
+}
+
+### 3. Login with phone number and password
+POST {{host}}/api/patient-auth/login
+Content-Type: application/json
+
+{
+  "phoneNumber": "+1234567890",
+  "password": "SecurePassword123"
+}
+
+### 4. Check if phone number exists
+GET {{host}}/api/patient-auth/phone-exists?phoneNumber=+1234567890
+
+### 5. Check if username exists
+GET {{host}}/api/patient-auth/username-exists?userName=johndoe123
+
+###

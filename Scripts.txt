@@ -1,0 +1,6 @@
+
+# Migration
+C:\Users\ASUS\.dotnet\tools\dotnet-ef migrations add Init --context IvyContext --project ..\Ivy.Core\Ivy.Core.csproj --startup-project .\Ivy.Api.csproj
+
+# Update Db
+C:\Users\ASUS\.dotnet\tools\dotnet-ef database update --context IvyContext --project ..\Ivy.Core\Ivy.Core.csproj --startup-project .\Ivy.Api.csproj

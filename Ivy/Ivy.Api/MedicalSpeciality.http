@@ -1,0 +1,70 @@
+@baseUrl = https://localhost:7047
+@contentType = application/json
+
+### Get All Medical Specialities with Pagination
+GET {{baseUrl}}/api/medical-specialities?page=1&pageSize=10
+Accept: {{contentType}}
+
+### Get All Medical Specialities with Search
+GET {{baseUrl}}/api/medical-specialities?searchTerm=cardio&isActive=true
+Accept: {{contentType}}
+
+### Get All Medical Specialities with Arabic Name Filter
+GET {{baseUrl}}/api/medical-specialities?nameAr=قلب&page=1&pageSize=5
+Accept: {{contentType}}
+
+### Get All Medical Specialities with English Name Filter
+GET {{baseUrl}}/api/medical-specialities?nameEn=Cardiology
+Accept: {{contentType}}
+
+### Get Medical Speciality by ID
+GET {{baseUrl}}/api/medical-specialities/1
+Accept: {{contentType}}
+
+### Create New Medical Speciality
+POST {{baseUrl}}/api/medical-specialities
+Content-Type: {{contentType}}
+
+{
+  "nameAr": "طب القلب",
+  "nameEn": "Cardiology",
+  "descriptionAr": "تخصص طبي يركز على تشخيص وعلاج أمراض القلب والأوعية الدموية",
+  "descriptionEn": "Medical specialty focused on diagnosing and treating heart and cardiovascular diseases",
+  "isActive": true
+}
+
+### Create Another Medical Speciality
+POST {{baseUrl}}/api/medical-specialities
+Content-Type: {{contentType}}
+
+{
+  "nameAr": "طب الأطفال",
+  "nameEn": "Pediatrics",
+  "descriptionAr": "تخصص طبي يهتم بصحة الأطفال والمراهقين",
+  "descriptionEn": "Medical specialty that focuses on the health of children and adolescents",
+  "isActive": true
+}
+
+### Update Medical Speciality
+PUT {{baseUrl}}/api/medical-specialities/1
+Content-Type: {{contentType}}
+
+{
+  "nameAr": "طب القلب والأوعية الدموية",
+  "nameEn": "Cardiovascular Medicine",
+  "descriptionAr": "تخصص طبي متقدم يركز على تشخيص وعلاج أمراض القلب والأوعية الدموية المعقدة",
+  "descriptionEn": "Advanced medical specialty focused on diagnosing and treating complex heart and cardiovascular diseases",
+  "isActive": true
+}
+
+### Check if Medical Speciality Exists
+GET {{baseUrl}}/api/medical-specialities/1/exists
+Accept: {{contentType}}
+
+### Delete Medical Speciality (Soft Delete)
+DELETE {{baseUrl}}/api/medical-specialities/1
+Accept: {{contentType}}
+
+### Try to Get Deleted Medical Speciality (Should return 404)
+GET {{baseUrl}}/api/medical-specialities/1
+Accept: {{contentType}}
