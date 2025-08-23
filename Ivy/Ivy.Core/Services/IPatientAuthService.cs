@@ -57,4 +57,27 @@ public interface IPatientAuthService
     /// <param name="userName">Username to check</param>
     /// <returns>True if username exists</returns>
     Task<Result<bool>> UserNameExistsAsync(string userName);
+
+    /// <summary>
+    /// Initiates forgot password process by sending OTP to registered phone number
+    /// </summary>
+    /// <param name="phoneNumber">Phone number to send reset OTP</param>
+    /// <returns>Result with OTP generation status</returns>
+    Task<Result<string>> ForgotPasswordAsync(string phoneNumber);
+
+    /// <summary>
+    /// Resets password using OTP verification
+    /// </summary>
+    /// <param name="phoneNumber">Phone number</param>
+    /// <param name="otp">OTP for verification</param>
+    /// <param name="newPassword">New password to set</param>
+    /// <returns>Result with password reset status</returns>
+    Task<Result<bool>> ResetPasswordAsync(string phoneNumber, string otp, string newPassword);
+
+    /// <summary>
+    /// Gets patient profile by user ID
+    /// </summary>
+    /// <param name="userId">User ID to get patient profile for</param>
+    /// <returns>Result with patient data</returns>
+    Task<Result<Patient>> GetPatientByUserIdAsync(int userId);
 }

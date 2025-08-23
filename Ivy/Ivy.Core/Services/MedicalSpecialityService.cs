@@ -72,7 +72,7 @@ public class MedicalSpecialityService : IMedicalSpecialityService
             var paginatedResult = PaginatedResult<MedicalSpeciality>.Create(medicalSpecialities, totalCount, page, pageSize);
             return Result<PaginatedResult<MedicalSpeciality>>.Ok("MEDICAL_SPECIALITIES_RETRIEVED_SUCCESS", paginatedResult);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             var emptyResult = new PaginatedResult<MedicalSpeciality>();
             return Result<PaginatedResult<MedicalSpeciality>>.Error("MEDICAL_SPECIALITIES_RETRIEVAL_FAILED", emptyResult);
@@ -92,7 +92,7 @@ public class MedicalSpecialityService : IMedicalSpecialityService
 
             return Result<MedicalSpeciality>.Ok("MEDICAL_SPECIALITY_RETRIEVED_SUCCESS", medicalSpeciality);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<MedicalSpeciality>.Error("MEDICAL_SPECIALITY_RETRIEVAL_FAILED", null!);
         }
@@ -119,7 +119,7 @@ public class MedicalSpecialityService : IMedicalSpecialityService
 
             return Result<MedicalSpeciality>.Ok("MEDICAL_SPECIALITY_CREATED_SUCCESS", medicalSpeciality);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<MedicalSpeciality>.Error("MEDICAL_SPECIALITY_CREATION_FAILED", null!);
         }
@@ -156,7 +156,7 @@ public class MedicalSpecialityService : IMedicalSpecialityService
 
             return Result<MedicalSpeciality>.Ok("MEDICAL_SPECIALITY_UPDATED_SUCCESS", existingMedicalSpeciality);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<MedicalSpeciality>.Error("MEDICAL_SPECIALITY_UPDATE_FAILED", null!);
         }
@@ -182,7 +182,7 @@ public class MedicalSpecialityService : IMedicalSpecialityService
 
             return Result.Ok("MEDICAL_SPECIALITY_DELETED_SUCCESS");
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result.Error("MEDICAL_SPECIALITY_DELETION_FAILED");
         }
@@ -195,7 +195,7 @@ public class MedicalSpecialityService : IMedicalSpecialityService
             var exists = await _context.MedicalSpecialities.AnyAsync(ms => ms.Id == id);
             return Result<bool>.Ok("MEDICAL_SPECIALITY_EXISTS_CHECK_SUCCESS", exists);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<bool>.Error("MEDICAL_SPECIALITY_EXISTS_CHECK_FAILED", false);
         }
@@ -216,7 +216,7 @@ public class MedicalSpecialityService : IMedicalSpecialityService
 
             return Result<bool>.Ok("MEDICAL_SPECIALITY_EXISTS_CHECK_SUCCESS", exists);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<bool>.Error("MEDICAL_SPECIALITY_EXISTS_CHECK_FAILED", false);
         }

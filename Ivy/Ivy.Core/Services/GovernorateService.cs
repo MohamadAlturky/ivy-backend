@@ -68,7 +68,7 @@ public class GovernorateService : IGovernorateService
             var paginatedResult = PaginatedResult<Governorate>.Create(governorates, totalCount, page, pageSize);
             return Result<PaginatedResult<Governorate>>.Ok("GOVERNORATES_RETRIEVED_SUCCESS", paginatedResult);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             var emptyResult = new PaginatedResult<Governorate>();
             return Result<PaginatedResult<Governorate>>.Error("GOVERNORATES_RETRIEVAL_FAILED", emptyResult);
@@ -95,7 +95,7 @@ public class GovernorateService : IGovernorateService
 
             return Result<Governorate>.Ok("GOVERNORATE_RETRIEVED_SUCCESS", governorate);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<Governorate>.Error("GOVERNORATE_RETRIEVAL_FAILED", null!);
         }
@@ -122,7 +122,7 @@ public class GovernorateService : IGovernorateService
 
             return Result<Governorate>.Ok("GOVERNORATE_CREATED_SUCCESS", governorate);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<Governorate>.Error("GOVERNORATE_CREATION_FAILED", null!);
         }
@@ -157,7 +157,7 @@ public class GovernorateService : IGovernorateService
 
             return Result<Governorate>.Ok("GOVERNORATE_UPDATED_SUCCESS", existingGovernorate);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<Governorate>.Error("GOVERNORATE_UPDATE_FAILED", null!);
         }
@@ -192,7 +192,7 @@ public class GovernorateService : IGovernorateService
 
             return Result.Ok("GOVERNORATE_DELETED_SUCCESS");
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result.Error("GOVERNORATE_DELETION_FAILED");
         }
@@ -205,7 +205,7 @@ public class GovernorateService : IGovernorateService
             var exists = await _context.Governorates.AnyAsync(g => g.Id == id);
             return Result<bool>.Ok("GOVERNORATE_EXISTS_CHECK_SUCCESS", exists);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<bool>.Error("GOVERNORATE_EXISTS_CHECK_FAILED", false);
         }
@@ -226,7 +226,7 @@ public class GovernorateService : IGovernorateService
 
             return Result<bool>.Ok("GOVERNORATE_EXISTS_CHECK_SUCCESS", exists);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<bool>.Error("GOVERNORATE_EXISTS_CHECK_FAILED", false);
         }
@@ -242,7 +242,7 @@ public class GovernorateService : IGovernorateService
 
             return Result<int>.Ok("CITIES_COUNT_RETRIEVED_SUCCESS", count);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<int>.Error("CITIES_COUNT_RETRIEVAL_FAILED", 0);
         }

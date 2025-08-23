@@ -3,7 +3,9 @@ using Ivy.Api.Services;
 using Ivy.Core.Jwt;
 using Ivy.Core.Services;
 using IvyBackend;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Ivy.Api.Controllers;
 
@@ -46,7 +48,7 @@ public class PatientAuthController : BaseController
                 registerDto.FirstName,
                 registerDto.MiddleName,
                 registerDto.LastName,
-                registerDto.UserName,
+                registerDto.FirstName + ' ' + registerDto.MiddleName + ' ' + registerDto.LastName,
                 registerDto.Password,
                 registerDto.PhoneNumber,
                 registerDto.Gender,
@@ -227,6 +229,124 @@ public class PatientAuthController : BaseController
         catch (Exception ex)
         {
             return HandleInternalError<bool>(ex, "checking username existence");
+        }
+    }
+
+    /// <summary>
+    /// Initiate forgot password process by sending OTP to registered phone number
+    /// </summary>
+    /// <param name="forgotPasswordDto">Forgot password data with phone number</param>
+    /// <returns>Result with OTP for password reset</returns>
+    [HttpPost("forgot-password")]
+    public async Task<ActionResult<ApiResponse<ForgotPasswordResponseDto>>> ForgotPassword(
+        [FromBody] ForgotPasswordDto forgotPasswordDto
+    )
+    {
+        try
+        {
+            if (!IsModelValid())
+            {
+                return HandleValidationError<ForgotPasswordResponseDto>();
+            }
+
+            var result = await _patientAuthService.ForgotPasswordAsync(forgotPasswordDto.PhoneNumber);
+
+            if (result.Success)
+            {
+                var responseDto = new ForgotPasswordResponseDto
+                {
+                    Message = "Password reset OTP has been sent to your phone number.",
+                    Otp = result.Data, // In production, don't return OTP in response, send via SMS instead
+                };
+
+                var mappedResult = Result<ForgotPasswordResponseDto>.Ok(
+                    result.MessageCode,
+                    responseDto
+                );
+                return HandleResult(mappedResult);
+            }
+
+            var failedResult = Result<ForgotPasswordResponseDto>.Error(result.MessageCode, default!);
+            return HandleResult(failedResult);
+        }
+        catch (Exception ex)
+        {
+            return HandleInternalError<ForgotPasswordResponseDto>(ex, "processing forgot password request");
+        }
+    }
+
+    /// <summary>
+    /// Reset password using OTP verification
+    /// </summary>
+    /// <param name="resetPasswordDto">Password reset data with OTP and new password</param>
+    /// <returns>Result indicating password reset success</returns>
+    [HttpPost("reset-password")]
+    public async Task<ActionResult<ApiResponse<string>>> ResetPassword(
+        [FromBody] ResetPasswordDto resetPasswordDto
+    )
+    {
+        try
+        {
+            if (!IsModelValid())
+            {
+                return HandleValidationError<string>();
+            }
+
+            var result = await _patientAuthService.ResetPasswordAsync(
+                resetPasswordDto.PhoneNumber,
+                resetPasswordDto.Otp,
+                resetPasswordDto.NewPassword
+            );
+
+            if (result.Success)
+            {
+                var message = "Password has been reset successfully. You can now login with your new password.";
+                var mappedResult = Result<string>.Ok(result.MessageCode, message);
+                return HandleResult(mappedResult);
+            }
+
+            var failedResult = Result<string>.Error(result.MessageCode, default!);
+            return HandleResult(failedResult);
+        }
+        catch (Exception ex)
+        {
+            return HandleInternalError<string>(ex, "resetting password");
+        }
+    }
+
+    /// <summary>
+    /// Get current authenticated patient's profile
+    /// </summary>
+    /// <returns>Current patient profile data</returns>
+    [HttpGet("my-profile")]
+    [Authorize]
+    public async Task<ActionResult<ApiResponse<PatientDto>>> GetMyProfile()
+    {
+        try
+        {
+            // Get user ID from JWT token
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            {
+                var invalidTokenResult = Result<PatientDto>.Error("INVALID_TOKEN", default!);
+                return HandleResult(invalidTokenResult);
+            }
+
+            var result = await _patientAuthService.GetPatientByUserIdAsync(userId);
+
+            if (result.Success)
+            {
+                var patientDto = MapToPatientDto(result.Data);
+                var mappedResult = Result<PatientDto>.Ok(result.MessageCode, patientDto);
+                return HandleResult(mappedResult);
+            }
+
+            var failedResult = Result<PatientDto>.Error(result.MessageCode, default!);
+            return HandleResult(failedResult);
+        }
+        catch (Exception ex)
+        {
+            return HandleInternalError<PatientDto>(ex, "getting patient profile");
         }
     }
 

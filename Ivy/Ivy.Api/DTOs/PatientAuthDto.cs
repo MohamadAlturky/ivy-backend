@@ -17,10 +17,6 @@ public class RegisterPatientDto
     public string LastName { get; set; } = string.Empty;
 
     [Required]
-    [StringLength(50, MinimumLength = 3)]
-    public string UserName { get; set; } = string.Empty;
-
-    [Required]
     [StringLength(255, MinimumLength = 6)]
     public string Password { get; set; } = string.Empty;
 
@@ -93,4 +89,34 @@ public class AuthResponseDto
     public PatientDto Patient { get; set; } = null!;
     public string Message { get; set; } = string.Empty;
     public string Token { get; set; } = string.Empty;
+}
+
+public class ForgotPasswordDto
+{
+    [Required]
+    [Phone]
+    [StringLength(20)]
+    public string PhoneNumber { get; set; } = string.Empty;
+}
+
+public class ResetPasswordDto
+{
+    [Required]
+    [Phone]
+    [StringLength(20)]
+    public string PhoneNumber { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(10, MinimumLength = 4)]
+    public string Otp { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(255, MinimumLength = 6)]
+    public string NewPassword { get; set; } = string.Empty;
+}
+
+public class ForgotPasswordResponseDto
+{
+    public string Message { get; set; } = string.Empty;
+    public string Otp { get; set; } = string.Empty; // In production, don't return OTP in response
 }

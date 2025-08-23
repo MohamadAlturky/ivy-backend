@@ -69,7 +69,7 @@ public class CityService : ICityService
             var paginatedResult = PaginatedResult<City>.Create(cities, totalCount, page, pageSize);
             return Result<PaginatedResult<City>>.Ok("CITIES_RETRIEVED_SUCCESS", paginatedResult);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             var emptyResult = new PaginatedResult<City>();
             return Result<PaginatedResult<City>>.Error("CITIES_RETRIEVAL_FAILED", emptyResult);
@@ -91,7 +91,7 @@ public class CityService : ICityService
 
             return Result<City>.Ok("CITY_RETRIEVED_SUCCESS", city);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<City>.Error("CITY_RETRIEVAL_FAILED", null!);
         }
@@ -134,7 +134,7 @@ public class CityService : ICityService
 
             return Result<City>.Ok("CITY_CREATED_SUCCESS", createdCity);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<City>.Error("CITY_CREATION_FAILED", null!);
         }
@@ -186,7 +186,7 @@ public class CityService : ICityService
 
             return Result<City>.Ok("CITY_UPDATED_SUCCESS", updatedCity);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<City>.Error("CITY_UPDATE_FAILED", null!);
         }
@@ -211,7 +211,7 @@ public class CityService : ICityService
 
             return Result.Ok("CITY_DELETED_SUCCESS");
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result.Error("CITY_DELETION_FAILED");
         }
@@ -229,7 +229,7 @@ public class CityService : ICityService
 
             return Result<IEnumerable<City>>.Ok("CITIES_RETRIEVED_SUCCESS", cities);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<IEnumerable<City>>.Error(
                 "CITIES_RETRIEVAL_FAILED",
@@ -245,7 +245,7 @@ public class CityService : ICityService
             var exists = await _context.Cities.AnyAsync(c => c.Id == id);
             return Result<bool>.Ok("CITY_EXISTS_CHECK_SUCCESS", exists);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<bool>.Error("CITY_EXISTS_CHECK_FAILED", false);
         }
@@ -273,7 +273,7 @@ public class CityService : ICityService
 
             return Result<bool>.Ok("CITY_EXISTS_CHECK_SUCCESS", exists);
         }
-        catch (Exception ex)
+        catch (Exception _)
         {
             return Result<bool>.Error("CITY_EXISTS_CHECK_FAILED", false);
         }

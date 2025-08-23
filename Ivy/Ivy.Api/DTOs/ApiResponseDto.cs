@@ -8,7 +8,6 @@ public class ApiResponse<T>
     public string MessageCode { get; set; } = string.Empty;
     public string? Message { get; set; }
     public T? Data { get; set; }
-    public object? Errors { get; set; }
 
     public static ApiResponse<T> FromResult(Result<T> result, string? message = null)
     {
@@ -34,16 +33,13 @@ public class ApiResponse<T>
 
     public static ApiResponse<T> Error(
         string messageCode,
-        string? message = null,
-        object? errors = null
-    )
+        string? message = null    )
     {
         return new ApiResponse<T>
         {
             Success = false,
             MessageCode = messageCode,
             Message = message,
-            Errors = errors,
         };
     }
 }

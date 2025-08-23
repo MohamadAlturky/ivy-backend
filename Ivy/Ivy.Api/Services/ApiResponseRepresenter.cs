@@ -64,8 +64,7 @@ public class ApiResponseRepresenter : IApiResponseRepresenter
         {
             Success = false,
             MessageCode = "VALIDATION_ERROR",
-            Message = message,
-            Errors = errors,
+            Message = message
         };
 
         // Always return 200 OK as per requirements

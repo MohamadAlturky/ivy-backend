@@ -39,4 +39,22 @@ GET {{host}}/api/patient-auth/phone-exists?phoneNumber=+1234567890
 ### 5. Check if username exists
 GET {{host}}/api/patient-auth/username-exists?userName=johndoe123
 
+### 6. Forgot password (send OTP for password reset)
+POST {{host}}/api/patient-auth/forgot-password
+Content-Type: application/json
+
+{
+  "phoneNumber": "+1234567890"
+}
+
+### 7. Reset password (use the OTP returned from forgot password)
+POST {{host}}/api/patient-auth/reset-password
+Content-Type: application/json
+
+{
+  "phoneNumber": "+1234567890",
+  "otp": "123456",
+  "newPassword": "NewSecurePassword123"
+}
+
 ###
