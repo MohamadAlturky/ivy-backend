@@ -1,0 +1,45 @@
+graph TD
+    A["Admin Opens Dashboard"] --> B["POST /api/admin/login<br/>email + password"]
+    B --> C{Login<br/>Successful?}
+    C -->|No| D["Show Login Error<br/>Invalid credentials"]
+    C -->|Yes| E["JWT Token Generated<br/>Admin Authenticated"]
+    
+    %% Authenticated Access
+    E --> F["JWT Token Stored"]
+    F --> G["Access Admin Dashboard"]
+    G --> H["Protected Admin Routes"]
+    
+    %% Profile Management
+    H --> I["GET /api/admin/profile<br/>Authorization: Bearer token"]
+    I --> J{Token Valid?}
+    J -->|No| K["401 Unauthorized<br/>Redirect to Login"]
+    J -->|Yes| L["Return Admin Profile"]
+    
+    %% Password Change
+    H --> M["PUT /api/admin/change-password<br/>Authorization: Bearer token<br/>currentPassword + newPassword + confirmPassword"]
+    M --> N{Token Valid?}
+    N -->|No| O["401 Unauthorized<br/>Redirect to Login"]
+    N -->|Yes| P{Passwords<br/>Match?}
+    P -->|No| Q["Password Confirmation Error"]
+    P -->|Yes| R{Current Password<br/>Correct?}
+    R -->|No| S["Invalid Current Password"]
+    R -->|Yes| T["Password Changed Successfully"]
+    
+    %% Error Handling & Redirects
+    D --> B
+    K --> B
+    O --> B
+    Q --> M
+    S --> M
+    T --> G
+    
+    %% Styling
+    classDef success fill:#d4edda,stroke:#28a745,color:#000
+    classDef error fill:#f8d7da,stroke:#dc3545,color:#000
+    classDef process fill:#fff3cd,stroke:#ffc107,color:#000
+    classDef endpoint fill:#e3f2fd,stroke:#2196f3,color:#000
+    
+    class E,L,T success
+    class D,K,O,Q,S error
+    class F,G process
+    class B,I,M endpoint
