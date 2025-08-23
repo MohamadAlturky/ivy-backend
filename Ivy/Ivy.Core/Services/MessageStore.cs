@@ -348,6 +348,108 @@ public class MessageStore : IMessageStore
                 ["en"] = "Failed to check username",
                 ["ar"] = "فشل في فحص اسم المستخدم",
             },
+
+            // Admin Authentication Messages
+            ["ADMIN_LOGIN_SUCCESS"] = new()
+            {
+                ["en"] = "Admin login successful",
+                ["ar"] = "تم تسجيل دخول المسؤول بنجاح",
+            },
+            ["ADMIN_LOGIN_FAILED"] = new()
+            {
+                ["en"] = "Failed to login admin",
+                ["ar"] = "فشل في تسجيل دخول المسؤول",
+            },
+            ["ADMIN_PROFILE_RETRIEVED_SUCCESS"] = new()
+            {
+                ["en"] = "Admin profile retrieved successfully",
+                ["ar"] = "تم استرجاع ملف المسؤول الشخصي بنجاح",
+            },
+            ["ADMIN_PROFILE_RETRIEVAL_FAILED"] = new()
+            {
+                ["en"] = "Failed to retrieve admin profile",
+                ["ar"] = "فشل في استرجاع ملف المسؤول الشخصي",
+            },
+            ["ADMIN_PROFILE_UPDATED_SUCCESS"] = new()
+            {
+                ["en"] = "Admin profile updated successfully",
+                ["ar"] = "تم تحديث ملف المسؤول الشخصي بنجاح",
+            },
+            ["ADMIN_PROFILE_UPDATE_FAILED"] = new()
+            {
+                ["en"] = "Failed to update admin profile",
+                ["ar"] = "فشل في تحديث ملف المسؤول الشخصي",
+            },
+            ["ADMIN_PASSWORD_CHANGED_SUCCESS"] = new()
+            {
+                ["en"] = "Admin password changed successfully",
+                ["ar"] = "تم تغيير كلمة مرور المسؤول بنجاح",
+            },
+            ["ADMIN_PASSWORD_CHANGE_FAILED"] = new()
+            {
+                ["en"] = "Failed to change admin password",
+                ["ar"] = "فشل في تغيير كلمة مرور المسؤول",
+            },
+            ["ADMIN_NOT_FOUND"] = new()
+            {
+                ["en"] = "Admin not found",
+                ["ar"] = "المسؤول غير موجود",
+            },
+            ["ADMIN_EMAIL_ALREADY_EXISTS"] = new()
+            {
+                ["en"] = "An admin with this email already exists",
+                ["ar"] = "مسؤول بهذا البريد الإلكتروني موجود بالفعل",
+            },
+            ["ADMIN_EMAIL_CHECK_SUCCESS"] = new()
+            {
+                ["en"] = "Admin email check completed successfully",
+                ["ar"] = "تم إنجاز فحص البريد الإلكتروني للمسؤول بنجاح",
+            },
+            ["ADMIN_EMAIL_CHECK_FAILED"] = new()
+            {
+                ["en"] = "Failed to check admin email",
+                ["ar"] = "فشل في فحص البريد الإلكتروني للمسؤول",
+            },
+            ["INVALID_ADMIN_ID"] = new()
+            {
+                ["en"] = "Invalid admin ID",
+                ["ar"] = "معرف المسؤول غير صحيح",
+            },
+            ["INVALID_EMAIL"] = new()
+            {
+                ["en"] = "Invalid email address",
+                ["ar"] = "عنوان البريد الإلكتروني غير صحيح",
+            },
+            ["INVALID_UPDATE_DATA"] = new()
+            {
+                ["en"] = "Invalid update data provided",
+                ["ar"] = "بيانات التحديث المقدمة غير صحيحة",
+            },
+            ["INVALID_PASSWORD_CHANGE_DATA"] = new()
+            {
+                ["en"] = "Invalid password change data provided",
+                ["ar"] = "بيانات تغيير كلمة المرور المقدمة غير صحيحة",
+            },
+            ["CURRENT_PASSWORD_REQUIRED"] = new()
+            {
+                ["en"] = "Current password is required",
+                ["ar"] = "كلمة المرور الحالية مطلوبة",
+            },
+            ["INVALID_CURRENT_PASSWORD"] = new()
+            {
+                ["en"] = "Current password is incorrect",
+                ["ar"] = "كلمة المرور الحالية غير صحيحة",
+            },
+            ["PASSWORD_CONFIRMATION_MISMATCH"] = new()
+            {
+                ["en"] = "Password confirmation does not match",
+                ["ar"] = "تأكيد كلمة المرور غير متطابق",
+            },
+            ["INVALID_TOKEN"] = new()
+            {
+                ["en"] = "Invalid or expired token",
+                ["ar"] = "رمز غير صحيح أو منتهي الصلاحية",
+            },
         };
     }
 }

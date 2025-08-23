@@ -14,6 +14,7 @@ public class IvyContext : DbContext
     public DbSet<MedicalSpeciality> MedicalSpecialities { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Patient> Patients { get; set; } = null!;
+    public DbSet<Admin> Admins { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

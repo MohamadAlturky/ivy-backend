@@ -115,6 +115,8 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IGovernorateService, GovernorateService>();
 builder.Services.AddScoped<IMedicalSpecialityService, MedicalSpecialityService>();
 builder.Services.AddScoped<IPatientAuthService, PatientAuthService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IAdminSeederService, AdminSeederService>();
 
 // Register OTP service as singleton
 builder.Services.AddSingleton<IOtpService>(provider => OtpService.Instance);
@@ -125,6 +127,27 @@ builder.Services.AddScoped<IApiResponseRepresenter, ApiResponseRepresenter>();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
+
+// Seed default admin if none exists
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var adminSeederService = scope.ServiceProvider.GetRequiredService<IAdminSeederService>();
+        var seedResult = await adminSeederService.SeedDefaultAdminAsync();
+        
+        if (seedResult.Success && seedResult.Data)
+        {
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation("Default admin seeding completed successfully");
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Failed to seed default admin during application startup");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,0 +1,83 @@
+### Admin API Testing
+@baseUrl = http://localhost:5000/api/admin
+@contentType = application/json
+
+### 1. Admin Login
+POST {{baseUrl}}/login
+Content-Type: {{contentType}}
+
+{
+  "email": "admin@example.com",
+  "password": "adminPassword123"
+}
+
+### 2. Get Admin Profile (requires JWT token from login)
+GET {{baseUrl}}/profile
+Authorization: Bearer {{$auth.jwt}}
+
+### 3. Update Admin Profile - Email Only
+PUT {{baseUrl}}/profile
+Content-Type: {{contentType}}
+Authorization: Bearer {{$auth.jwt}}
+
+{
+  "email": "newemail@example.com"
+}
+
+### 4. Update Admin Profile - Email and Password
+PUT {{baseUrl}}/profile
+Content-Type: {{contentType}}
+Authorization: Bearer {{$auth.jwt}}
+
+{
+  "email": "newemail@example.com",
+  "currentPassword": "adminPassword123",
+  "newPassword": "newPassword123",
+  "confirmPassword": "newPassword123"
+}
+
+### 5. Change Admin Password
+PUT {{baseUrl}}/change-password
+Content-Type: {{contentType}}
+Authorization: Bearer {{$auth.jwt}}
+
+{
+  "currentPassword": "adminPassword123",
+  "newPassword": "newPassword123",
+  "confirmPassword": "newPassword123"
+}
+
+### 6. Check if Email Exists
+GET {{baseUrl}}/email-exists?email=admin@example.com
+
+### 7. Test Invalid Login
+POST {{baseUrl}}/login
+Content-Type: {{contentType}}
+
+{
+  "email": "invalid@example.com",
+  "password": "wrongpassword"
+}
+
+### 8. Test Invalid Email Format
+POST {{baseUrl}}/login
+Content-Type: {{contentType}}
+
+{
+  "email": "invalid-email",
+  "password": "adminPassword123"
+}
+
+### 9. Test Password Mismatch
+PUT {{baseUrl}}/change-password
+Content-Type: {{contentType}}
+Authorization: Bearer {{$auth.jwt}}
+
+{
+  "currentPassword": "adminPassword123",
+  "newPassword": "newPassword123",
+  "confirmPassword": "differentPassword123"
+}
+
+### 10. Test Unauthorized Access (no token)
+GET {{baseUrl}}/profile
