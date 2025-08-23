@@ -1,0 +1,68 @@
+graph TD
+    A["User Accesses Medical Specialities"] --> B["GET /api/medical-specialities<br/>Query params: page, pageSize, searchTerm, isActive"]
+    B --> C{Request<br/>Valid?}
+    C -->|No| D["400 Bad Request<br/>Validation errors"]
+    C -->|Yes| E["Return Paginated Specialities<br/>with filtering applied"]
+
+    %% View Individual Speciality
+    E --> F["GET /api/medical-specialities/{id}<br/>View specific speciality"]
+    F --> G{Speciality<br/>Exists?}
+    G -->|No| H["404 Not Found<br/>Speciality not found"]
+    G -->|Yes| I["Return Speciality Details<br/>Localized based on Accept-Language"]
+
+    %% Create New Speciality
+    A --> J["POST /api/medical-specialities<br/>Create new speciality<br/>NameAr, NameEn, DescriptionAr, DescriptionEn, IsActive"]
+    J --> K{Request<br/>Valid?}
+    K -->|No| L["400 Bad Request<br/>Validation errors"]
+    K -->|Yes| M{Speciality Name<br/>Available?}
+    M -->|No| N["409 Conflict<br/>Speciality already exists"]
+    M -->|Yes| O["Speciality Created<br/>Return created speciality"]
+
+    %% Update Speciality
+    E --> P["PUT /api/medical-specialities/{id}<br/>Update speciality<br/>NameAr, NameEn, DescriptionAr, DescriptionEn, IsActive"]
+    P --> Q{Speciality<br/>Exists?}
+    Q -->|No| R["404 Not Found<br/>Speciality not found"]
+    Q -->|Yes| S{Request<br/>Valid?}
+    S -->|No| T["400 Bad Request<br/>Validation errors"]
+    S -->|Yes| U["Speciality Updated<br/>Return updated speciality"]
+
+    %% Delete Speciality
+    E --> V["DELETE /api/medical-specialities/{id}<br/>Soft delete speciality"]
+    V --> W{Speciality<br/>Exists?}
+    W -->|No| X["404 Not Found<br/>Speciality not found"]
+    W -->|Yes| Y{Has Related<br/>Records?}
+    Y -->|Yes| Z["409 Conflict<br/>Cannot delete - has related records"]
+    Y -->|No| AA["Speciality Deleted<br/>Soft delete successful"]
+
+    %% Check Existence
+    E --> BB["GET /api/medical-specialities/{id}/exists<br/>Check if speciality exists"]
+    BB --> CC["Return Boolean<br/>True if exists, False otherwise"]
+
+    %% Error Handling & Navigation
+    D --> B
+    H --> E
+    L --> J
+    N --> J
+    R --> E
+    T --> P
+    X --> E
+    Z --> E
+
+    %% Success Flows
+    O --> E
+    U --> E
+    AA --> E
+    I --> E
+
+    %% Styling
+    classDef success fill:#d4edda,stroke:#28a745,color:#000
+    classDef error fill:#f8d7da,stroke:#dc3545,color:#000
+    classDef process fill:#fff3cd,stroke:#ffc107,color:#000
+    classDef endpoint fill:#e3f2fd,stroke:#2196f3,color:#000
+    classDef decision fill:#f8f9fa,stroke:#6c757d,color:#000
+
+    class E,I,O,U,AA,CC success
+    class D,H,L,N,R,T,X,Z error
+    class A process
+    class B,F,J,P,V,BB endpoint
+    class C,G,K,M,Q,S,W,Y decision
