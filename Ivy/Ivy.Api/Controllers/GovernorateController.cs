@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Ivy.Api.Controllers;
 
 [Route("api/governorates")]
@@ -28,8 +30,8 @@ public class GovernorateController : BaseController
             var result = await _governorateService.GetAllAsync(
                 query.Page,
                 query.PageSize,
-                query.NameAr,
-                query.NameEn,
+                query.Name,
+                query.Name,
                 query.IsActive,
                 query.IncludeCities
             );
@@ -37,7 +39,7 @@ public class GovernorateController : BaseController
             if (result.Success)
             {
                 var governorateDtos = result.Data.Data.Select(g =>
-                    MapToDto(g, query.IncludeCities)
+                    MapToDto(g, query.IncludeCities, this.GetLanguage())
                 );
                 var paginatedDto = new PaginatedResult<GovernorateDto>
                 {
@@ -87,7 +89,7 @@ public class GovernorateController : BaseController
 
             if (result.Success)
             {
-                var governorateDto = MapToDto(result.Data, includeCities);
+                var governorateDto = MapToDto(result.Data, includeCities, this.GetLanguage());
                 var mappedResult = Result<GovernorateDto>.Ok(result.MessageCode, governorateDto);
                 return HandleResult(mappedResult);
             }
@@ -127,7 +129,7 @@ public class GovernorateController : BaseController
 
             if (result.Success)
             {
-                var governorateDto = MapToDto(result.Data, false);
+                var governorateDto = MapToDto(result.Data, false, this.GetLanguage());
                 var mappedResult = Result<GovernorateDto>.Ok(result.MessageCode, governorateDto);
                 return HandleResult(mappedResult);
             }
@@ -168,7 +170,7 @@ public class GovernorateController : BaseController
 
             if (result.Success)
             {
-                var governorateDto = MapToDto(result.Data, false);
+                var governorateDto = MapToDto(result.Data, false, this.GetLanguage());
                 var mappedResult = Result<GovernorateDto>.Ok(result.MessageCode, governorateDto);
                 return HandleResult(mappedResult);
             }
@@ -233,13 +235,12 @@ public class GovernorateController : BaseController
         }
     }
 
-    private static GovernorateDto MapToDto(Governorate governorate, bool includeCities)
+    private static GovernorateDto MapToDto(Governorate governorate, bool includeCities, string language)
     {
         var dto = new GovernorateDto
         {
             Id = governorate.Id,
-            NameAr = governorate.NameAr,
-            NameEn = governorate.NameEn,
+            Name = language == "ar" ? governorate.NameAr : governorate.NameEn,
             IsActive = governorate.IsActive,
             CreatedAt = governorate.CreatedAt,
             UpdatedAt = governorate.UpdatedAt,

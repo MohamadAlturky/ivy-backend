@@ -43,7 +43,7 @@ public class CityController : BaseController
 
             if (result.Success)
             {
-                var cityDtos = result.Data.Data.Select(MapToDto);
+                var cityDtos = result.Data.Data.Select(c => MapToDto(c, this.GetLanguage()));
                 var paginatedDto = new PaginatedResult<CityDto>
                 {
                     Data = cityDtos,
@@ -83,7 +83,7 @@ public class CityController : BaseController
 
             if (result.Success)
             {
-                var cityDto = MapToDto(result.Data);
+                var cityDto = MapToDto(result.Data, this.GetLanguage());
                 var mappedResult = Result<CityDto>.Ok(result.MessageCode, cityDto);
                 return HandleResult(mappedResult);
             }
@@ -124,7 +124,7 @@ public class CityController : BaseController
 
             if (result.Success)
             {
-                var cityDto = MapToDto(result.Data);
+                var cityDto = MapToDto(result.Data, this.GetLanguage());
                 var mappedResult = Result<CityDto>.Ok(result.MessageCode, cityDto);
                 return HandleResult(mappedResult);
             }
@@ -166,7 +166,7 @@ public class CityController : BaseController
 
             if (result.Success)
             {
-                var cityDto = MapToDto(result.Data);
+                var cityDto = MapToDto(result.Data, this.GetLanguage());
                 var mappedResult = Result<CityDto>.Ok(result.MessageCode, cityDto);
                 return HandleResult(mappedResult);
             }
@@ -211,7 +211,7 @@ public class CityController : BaseController
 
             if (result.Success)
             {
-                var cityDtos = result.Data.Select(MapToDto);
+                var cityDtos = result.Data.Select(c => MapToDto(c, this.GetLanguage()));
                 var mappedResult = Result<IEnumerable<CityDto>>.Ok(result.MessageCode, cityDtos);
                 return HandleResult(mappedResult);
             }
@@ -245,7 +245,7 @@ public class CityController : BaseController
         }
     }
 
-    private static CityDto MapToDto(City city)
+    private static CityDto MapToDto(City city, string language)
     {
         return new CityDto
         {
@@ -261,8 +261,7 @@ public class CityController : BaseController
                     ? new GovernorateDto
                     {
                         Id = city.Governorate.Id,
-                        NameAr = city.Governorate.NameAr,
-                        NameEn = city.Governorate.NameEn,
+                        Name = language == "ar" ? city.Governorate.NameAr : city.Governorate.NameEn,
                         IsActive = city.Governorate.IsActive,
                         CreatedAt = city.Governorate.CreatedAt,
                         UpdatedAt = city.Governorate.UpdatedAt,
