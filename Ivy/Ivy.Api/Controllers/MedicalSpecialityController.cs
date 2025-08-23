@@ -35,8 +35,8 @@ public class MedicalSpecialityController : BaseController
             var result = await _medicalSpecialityService.GetAllAsync(
                 query.Page,
                 query.PageSize,
-                query.NameAr,
-                query.NameEn,
+                query.Name,
+                query.Name,
                 query.SearchTerm,
                 query.IsActive
             );
@@ -44,7 +44,7 @@ public class MedicalSpecialityController : BaseController
             if (result.Success)
             {
                 var medicalSpecialityDtos = result.Data.Data.Select(ms =>
-                    MapToDto(ms)
+                    MapToDto(ms, this.GetLanguage())
                 );
                 var paginatedDto = new PaginatedResult<MedicalSpecialityDto>
                 {
@@ -91,7 +91,7 @@ public class MedicalSpecialityController : BaseController
 
             if (result.Success)
             {
-                var medicalSpecialityDto = MapToDto(result.Data);
+                var medicalSpecialityDto = MapToDto(result.Data, this.GetLanguage());
                 var mappedResult = Result<MedicalSpecialityDto>.Ok(result.MessageCode, medicalSpecialityDto);
                 return HandleResult(mappedResult);
             }
@@ -133,7 +133,7 @@ public class MedicalSpecialityController : BaseController
 
             if (result.Success)
             {
-                var medicalSpecialityDto = MapToDto(result.Data);
+                var medicalSpecialityDto = MapToDto(result.Data, this.GetLanguage());
                 var mappedResult = Result<MedicalSpecialityDto>.Ok(result.MessageCode, medicalSpecialityDto);
                 return HandleResult(mappedResult);
             }
@@ -176,7 +176,7 @@ public class MedicalSpecialityController : BaseController
 
             if (result.Success)
             {
-                var medicalSpecialityDto = MapToDto(result.Data);
+                var medicalSpecialityDto = MapToDto(result.Data, this.GetLanguage());
                 var mappedResult = Result<MedicalSpecialityDto>.Ok(result.MessageCode, medicalSpecialityDto);
                 return HandleResult(mappedResult);
             }
@@ -224,15 +224,13 @@ public class MedicalSpecialityController : BaseController
         }
     }
 
-    private static MedicalSpecialityDto MapToDto(MedicalSpeciality medicalSpeciality)
+    private static MedicalSpecialityDto MapToDto(MedicalSpeciality medicalSpeciality, string language)
     {
         return new MedicalSpecialityDto
         {
             Id = medicalSpeciality.Id,
-            NameAr = medicalSpeciality.NameAr,
-            NameEn = medicalSpeciality.NameEn,
-            DescriptionAr = medicalSpeciality.DescriptionAr,
-            DescriptionEn = medicalSpeciality.DescriptionEn,
+            Name = language == "ar" ? medicalSpeciality.NameAr : medicalSpeciality.NameEn,
+            Description = language == "ar" ? medicalSpeciality.DescriptionAr : medicalSpeciality.DescriptionEn,
             IsActive = medicalSpeciality.IsActive,
             CreatedAt = medicalSpeciality.CreatedAt,
             UpdatedAt = medicalSpeciality.UpdatedAt,

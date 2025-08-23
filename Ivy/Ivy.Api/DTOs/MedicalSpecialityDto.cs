@@ -5,10 +5,8 @@ namespace Ivy.Api.DTOs;
 public class MedicalSpecialityDto
 {
     public int Id { get; set; }
-    public string NameAr { get; set; } = string.Empty;
-    public string NameEn { get; set; } = string.Empty;
-    public string DescriptionAr { get; set; } = string.Empty;
-    public string DescriptionEn { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
@@ -61,10 +59,7 @@ public class MedicalSpecialityQueryDto
     public int PageSize { get; set; } = 10;
 
     [StringLength(100)]
-    public string? NameAr { get; set; }
-
-    [StringLength(100)]
-    public string? NameEn { get; set; }
+    public string? Name { get; set; }
 
     [StringLength(100)]
     public string? SearchTerm { get; set; }
