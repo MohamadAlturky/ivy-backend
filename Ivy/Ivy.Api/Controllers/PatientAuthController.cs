@@ -178,59 +178,59 @@ public class PatientAuthController : BaseController
         }
     }
 
-    /// <summary>
-    /// Check if phone number is already registered
-    /// </summary>
-    /// <param name="phoneNumber">Phone number to check</param>
-    /// <returns>Boolean indicating if phone exists</returns>
-    [HttpGet("phone-exists")]
-    public async Task<ActionResult<ApiResponse<bool>>> CheckPhoneExists(
-        [FromQuery] string phoneNumber
-    )
-    {
-        try
-        {
-            if (string.IsNullOrWhiteSpace(phoneNumber))
-            {
-                var invalidResult = Result<bool>.Error("INVALID_PHONE_NUMBER", false);
-                return HandleResult(invalidResult);
-            }
+    // /// <summary>
+    // /// Check if phone number is already registered
+    // /// </summary>
+    // /// <param name="phoneNumber">Phone number to check</param>
+    // /// <returns>Boolean indicating if phone exists</returns>
+    // [HttpGet("phone-exists")]
+    // public async Task<ActionResult<ApiResponse<bool>>> CheckPhoneExists(
+    //     [FromQuery] string phoneNumber
+    // )
+    // {
+    //     try
+    //     {
+    //         if (string.IsNullOrWhiteSpace(phoneNumber))
+    //         {
+    //             var invalidResult = Result<bool>.Error("INVALID_PHONE_NUMBER", false);
+    //             return HandleResult(invalidResult);
+    //         }
 
-            var result = await _patientAuthService.PhoneExistsAsync(phoneNumber);
-            return HandleResult(result);
-        }
-        catch (Exception ex)
-        {
-            return HandleInternalError<bool>(ex, "checking phone existence");
-        }
-    }
+    //         var result = await _patientAuthService.PhoneExistsAsync(phoneNumber);
+    //         return HandleResult(result);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return HandleInternalError<bool>(ex, "checking phone existence");
+    //     }
+    // }
 
-    /// <summary>
-    /// Check if username is already taken
-    /// </summary>
-    /// <param name="userName">Username to check</param>
-    /// <returns>Boolean indicating if username exists</returns>
-    [HttpGet("username-exists")]
-    public async Task<ActionResult<ApiResponse<bool>>> CheckUserNameExists(
-        [FromQuery] string userName
-    )
-    {
-        try
-        {
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                var invalidResult = Result<bool>.Error("INVALID_USERNAME", false);
-                return HandleResult(invalidResult);
-            }
+    // /// <summary>
+    // /// Check if username is already taken
+    // /// </summary>
+    // /// <param name="userName">Username to check</param>
+    // /// <returns>Boolean indicating if username exists</returns>
+    // [HttpGet("username-exists")]
+    // public async Task<ActionResult<ApiResponse<bool>>> CheckUserNameExists(
+    //     [FromQuery] string userName
+    // )
+    // {
+    //     try
+    //     {
+    //         if (string.IsNullOrWhiteSpace(userName))
+    //         {
+    //             var invalidResult = Result<bool>.Error("INVALID_USERNAME", false);
+    //             return HandleResult(invalidResult);
+    //         }
 
-            var result = await _patientAuthService.UserNameExistsAsync(userName);
-            return HandleResult(result);
-        }
-        catch (Exception ex)
-        {
-            return HandleInternalError<bool>(ex, "checking username existence");
-        }
-    }
+    //         var result = await _patientAuthService.UserNameExistsAsync(userName);
+    //         return HandleResult(result);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return HandleInternalError<bool>(ex, "checking username existence");
+    //     }
+    // }
 
     /// <summary>
     /// Initiate forgot password process by sending OTP to registered phone number

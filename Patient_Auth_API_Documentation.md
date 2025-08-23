@@ -1,10 +1,13 @@
 # Patient Authentication API Documentation
 
 ## Base URL
+
 `/api/patient-auth`
 
 ## Response Format
+
 All endpoints return data in the following format:
+
 ```json
 {
   "success": true,
@@ -17,9 +20,11 @@ All endpoints return data in the following format:
 ---
 
 ## 1. Register Patient
+
 **POST** `/register`
 
 ### Request Body
+
 ```json
 {
   "firstName": "John",
@@ -33,6 +38,7 @@ All endpoints return data in the following format:
 ```
 
 ### Response
+
 ```json
 {
   "success": true,
@@ -47,9 +53,11 @@ All endpoints return data in the following format:
 ---
 
 ## 2. Verify OTP
+
 **POST** `/verify-otp`
 
 ### Request Body
+
 ```json
 {
   "phoneNumber": "+1234567890",
@@ -58,6 +66,7 @@ All endpoints return data in the following format:
 ```
 
 ### Response
+
 ```json
 {
   "success": true,
@@ -89,9 +98,11 @@ All endpoints return data in the following format:
 ---
 
 ## 3. Login
+
 **POST** `/login`
 
 ### Request Body
+
 ```json
 {
   "phoneNumber": "+1234567890",
@@ -100,6 +111,7 @@ All endpoints return data in the following format:
 ```
 
 ### Response
+
 ```json
 {
   "success": true,
@@ -131,9 +143,11 @@ All endpoints return data in the following format:
 ---
 
 ## 4. Forgot Password
+
 **POST** `/forgot-password`
 
 ### Request Body
+
 ```json
 {
   "phoneNumber": "+1234567890"
@@ -141,6 +155,7 @@ All endpoints return data in the following format:
 ```
 
 ### Response
+
 ```json
 {
   "success": true,
@@ -155,9 +170,11 @@ All endpoints return data in the following format:
 ---
 
 ## 5. Reset Password
+
 **POST** `/reset-password`
 
 ### Request Body
+
 ```json
 {
   "phoneNumber": "+1234567890",
@@ -167,6 +184,7 @@ All endpoints return data in the following format:
 ```
 
 ### Response
+
 ```json
 {
   "success": true,
@@ -178,14 +196,17 @@ All endpoints return data in the following format:
 ---
 
 ## 6. Get My Profile
+
 **GET** `/my-profile`
 
 ### Headers
+
 ```
 Authorization: Bearer {jwt_token}
 ```
 
 ### Response
+
 ```json
 {
   "success": true,
@@ -215,6 +236,7 @@ Authorization: Bearer {jwt_token}
 ## Field Validations
 
 ### RegisterPatientDto
+
 - **firstName**: Required, 1-50 characters
 - **middleName**: Optional, max 50 characters
 - **lastName**: Required, 1-50 characters
@@ -224,6 +246,7 @@ Authorization: Bearer {jwt_token}
 - **dateOfBirth**: Required, valid date
 
 ### Common Validations
+
 - **phoneNumber**: Valid phone format, max 20 characters
 - **otp**: 4-10 characters
 - **password**: 6-255 characters
@@ -233,19 +256,17 @@ Authorization: Bearer {jwt_token}
 ## Error Responses
 
 ### Validation Errors (400 Bad Request)
+
 ```json
 {
   "success": false,
   "messageCode": "VALIDATION_ERROR",
   "message": "Validation failed",
-  "errors": {
-    "firstName": ["First name is required"],
-    "phoneNumber": ["Invalid phone number format"]
-  }
 }
 ```
 
 ### Authentication Errors (401 Unauthorized)
+
 ```json
 {
   "success": false,
@@ -255,6 +276,7 @@ Authorization: Bearer {jwt_token}
 ```
 
 ### Server Errors (500 Internal Server Error)
+
 ```json
 {
   "success": false,
@@ -262,3 +284,10 @@ Authorization: Bearer {jwt_token}
   "message": "An error occurred while processing your request"
 }
 ```
+
+> notes:
+Gender:
+
+- Male = 1,
+- Female = 2,
+- NotSpecified = 3,
