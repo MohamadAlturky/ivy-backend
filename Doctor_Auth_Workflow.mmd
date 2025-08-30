@@ -1,0 +1,67 @@
+graph TD
+    A["Doctor Opens App"] --> B{New User?}
+    B -->|Yes| C["POST /api/doctor-auth/register<br/>firstName + middleName + lastName + password + phoneNumber + gender + dateOfBirth"]
+    B -->|No| D["POST /api/doctor-auth/login<br/>phoneNumber + password"]
+    
+    %% Registration Flow
+    C --> E{Registration<br/>Successful?}
+    E -->|No| F["Show Registration Error<br/>Phone number exists or validation error"]
+    E -->|Yes| G["OTP Sent to Phone<br/>Account Created (Unverified)"]
+    
+    G --> H["POST /api/doctor-auth/verify-otp<br/>phoneNumber + otp"]
+    H --> I{OTP Valid?}
+    I -->|No| J["Show OTP Error<br/>Invalid or expired OTP"]
+    I -->|Yes| K["Account Verified<br/>JWT Token Generated"]
+    
+    %% Login Flow
+    D --> L{Login<br/>Successful?}
+    L -->|No| M["Show Login Error<br/>Invalid credentials or account issues"]
+    L -->|Yes| N{Account<br/>Verified?}
+    N -->|No| O["Account Not Verified<br/>Redirect to OTP Verification"]
+    N -->|Yes| P{Account<br/>Active?}
+    P -->|No| Q["Account Inactive Error"]
+    P -->|Yes| R["Login Successful<br/>JWT Token Generated"]
+    
+    %% Forgot Password Flow
+    M --> S["Forgot Password?"]
+    S --> T["POST /api/doctor-auth/forgot-password<br/>phoneNumber"]
+    T --> U{Doctor<br/>Found?}
+    U -->|No| V["Doctor Not Found Error"]
+    U -->|Yes| W["Password Reset OTP Sent"]
+    
+    W --> X["POST /api/doctor-auth/reset-password<br/>phoneNumber + otp + newPassword"]
+    X --> Y{OTP Valid?}
+    Y -->|No| Z["Invalid OTP Error"]
+    Y -->|Yes| AA["Password Reset Successfully"]
+    
+    %% Authenticated Access
+    K --> BB["JWT Token Stored"]
+    R --> BB
+    BB --> CC["Access Protected Features"]
+    CC --> DD["GET /api/doctor-auth/my-profile<br/>Authorization: Bearer token"]
+    DD --> EE{Token Valid?}
+    EE -->|No| FF["401 Unauthorized<br/>Redirect to Login"]
+    EE -->|Yes| GG["Return Doctor Profile"]
+    
+    %% Error Handling & Redirects
+    F --> C
+    J --> H
+    O --> H
+    Q --> D
+    V --> T
+    Z --> X
+    AA --> D
+    FF --> D
+    
+    %% Styling
+    classDef success fill:#d4edda,stroke:#28a745,color:#000
+    classDef error fill:#f8d7da,stroke:#dc3545,color:#000
+    classDef process fill:#fff3cd,stroke:#ffc107,color:#000
+    classDef endpoint fill:#e3f2fd,stroke:#2196f3,color:#000
+    classDef decision fill:#f0f0f0,stroke:#6c757d,color:#000
+    
+    class K,R,BB,GG,AA success
+    class F,J,M,O,Q,V,Z,FF error
+    class G,W,CC process
+    class C,D,H,T,X,DD endpoint
+    class B,E,I,L,N,P,U,Y,EE decision

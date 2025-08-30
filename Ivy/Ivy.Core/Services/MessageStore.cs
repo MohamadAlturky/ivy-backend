@@ -349,6 +349,82 @@ public class MessageStore : IMessageStore
                 ["ar"] = "فشل في فحص اسم المستخدم",
             },
 
+            // Patient Authentication Additional Messages
+            ["FORGOT_PASSWORD_OTP_SENT"] = new()
+            {
+                ["en"] = "Password reset OTP sent successfully",
+                ["ar"] = "تم إرسال رمز إعادة تعيين كلمة المرور بنجاح",
+            },
+            ["PATIENT_PROFILE_SUCCESS"] = new()
+            {
+                ["en"] = "Patient profile retrieved successfully",
+                ["ar"] = "تم استرجاع ملف المريض الشخصي بنجاح",
+            },
+            ["GET_PATIENT_PROFILE_FAILED"] = new()
+            {
+                ["en"] = "Failed to retrieve patient profile",
+                ["ar"] = "فشل في استرجاع ملف المريض الشخصي",
+            },
+            ["PHONE_NUMBER_NOT_FOUND"] = new()
+            {
+                ["en"] = "Phone number not found",
+                ["ar"] = "رقم الهاتف غير موجود",
+            },
+            ["FORGOT_PASSWORD_FAILED"] = new()
+            {
+                ["en"] = "Failed to process forgot password request",
+                ["ar"] = "فشل في معالجة طلب إعادة تعيين كلمة المرور",
+            },
+            ["INVALID_RESET_PASSWORD_DATA"] = new()
+            {
+                ["en"] = "Invalid password reset data provided",
+                ["ar"] = "بيانات إعادة تعيين كلمة المرور غير صحيحة",
+            },
+            ["PASSWORD_RESET_SUCCESS"] = new()
+            {
+                ["en"] = "Password reset successfully",
+                ["ar"] = "تم إعادة تعيين كلمة المرور بنجاح",
+            },
+            ["PASSWORD_RESET_FAILED"] = new()
+            {
+                ["en"] = "Failed to reset password",
+                ["ar"] = "فشل في إعادة تعيين كلمة المرور",
+            },
+            ["INVALID_USER_ID"] = new()
+            {
+                ["en"] = "Invalid user ID",
+                ["ar"] = "معرف المستخدم غير صحيح",
+            },
+
+            // Doctor Authentication Success Messages
+            ["DOCTOR_REGISTERED_SUCCESS"] = new()
+            {
+                ["en"] = "Doctor registered successfully",
+                ["ar"] = "تم تسجيل الطبيب بنجاح",
+            },
+            ["DOCTOR_PROFILE_SUCCESS"] = new()
+            {
+                ["en"] = "Doctor profile retrieved successfully",
+                ["ar"] = "تم استرجاع ملف الطبيب الشخصي بنجاح",
+            },
+
+            // Doctor Authentication Error Messages
+            ["DOCTOR_REGISTRATION_FAILED"] = new()
+            {
+                ["en"] = "Failed to register doctor",
+                ["ar"] = "فشل في تسجيل الطبيب",
+            },
+            ["DOCTOR_NOT_FOUND"] = new()
+            {
+                ["en"] = "Doctor not found",
+                ["ar"] = "الطبيب غير موجود",
+            },
+            ["GET_DOCTOR_PROFILE_FAILED"] = new()
+            {
+                ["en"] = "Failed to retrieve doctor profile",
+                ["ar"] = "فشل في استرجاع ملف الطبيب الشخصي",
+            },
+
             // Admin Authentication Messages
             ["ADMIN_LOGIN_SUCCESS"] = new()
             {

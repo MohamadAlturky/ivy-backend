@@ -1,0 +1,57 @@
+### Doctor Authentication API Tests
+
+### 1. Register a new doctor (RegisterDoctorDto)
+POST {{host}}/api/doctor-auth/register
+Content-Type: application/json
+
+{
+  "firstName": "Dr. Sarah",
+  "middleName": "Jane",
+  "lastName": "Smith",
+  "password": "SecurePassword123",
+  "phoneNumber": "0912345678",
+  "gender": 2,
+  "dateOfBirth": "1985-03-20T00:00:00Z"
+}
+
+### 2. Verify OTP (VerifyDoctorOtpDto - use the OTP returned from registration)
+POST {{host}}/api/doctor-auth/verify-otp
+Content-Type: application/json
+
+{
+  "phoneNumber": "0912345678",
+  "otp": "123456"
+}
+
+### 3. Login with phone number and password (LoginDoctorDto)
+POST {{host}}/api/doctor-auth/login
+Content-Type: application/json
+
+{
+  "phoneNumber": "0912345678",
+  "password": "SecurePassword123"
+}
+
+### 4. Forgot password (ForgotDoctorPasswordDto - send OTP for password reset)
+POST {{host}}/api/doctor-auth/forgot-password
+Content-Type: application/json
+
+{
+  "phoneNumber": "0912345678"
+}
+
+### 5. Reset password (ResetDoctorPasswordDto - use the OTP returned from forgot password)
+POST {{host}}/api/doctor-auth/reset-password
+Content-Type: application/json
+
+{
+  "phoneNumber": "0912345678",
+  "otp": "123456",
+  "newPassword": "NewSecurePassword456"
+}
+
+### 6. Get my profile (requires authentication - add Bearer token to Authorization header)
+GET {{host}}/api/doctor-auth/my-profile
+Authorization: Bearer {{token}}
+
+###

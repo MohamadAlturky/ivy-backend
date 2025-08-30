@@ -115,6 +115,7 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IGovernorateService, GovernorateService>();
 builder.Services.AddScoped<IMedicalSpecialityService, MedicalSpecialityService>();
 builder.Services.AddScoped<IPatientAuthService, PatientAuthService>();
+builder.Services.AddScoped<IDoctorAuthService, DoctorAuthService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IAdminSeederService, AdminSeederService>();
 
