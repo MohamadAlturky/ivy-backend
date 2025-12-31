@@ -9,6 +9,8 @@ public class Doctor
 
     public ICollection<DoctorMedicalSpeciality> DoctorMedicalSpecialities { get; set; } =
         new List<DoctorMedicalSpeciality>();
+    public ICollection<DoctorDynamicProfileHistory> DoctorDynamicProfileHistories { get; set; } =
+        [];
 }
 
 public class DoctorClinic : BaseEntity<int>
@@ -35,4 +37,12 @@ public class DoctorBusinessTimes : BaseEntity<int>
     public DoctorClinic DoctorClinic { get; set; } = null!;
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
+}
+
+public class DoctorDynamicProfileHistory : BaseEntity<int>
+{
+    public int DoctorId { get; set; }
+    public Doctor Doctor { get; set; } = null!;
+    public bool IsLatest { get; set; } = true;
+    public string JsonData { get; set; } = "{}";
 }

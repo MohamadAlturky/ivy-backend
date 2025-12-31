@@ -89,3 +89,22 @@ public class DoctorBusinessTimesConfiguration : IEntityTypeConfiguration<DoctorB
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
+
+public class DoctorDynamicProfileHistoryConfiguration
+    : IEntityTypeConfiguration<DoctorDynamicProfileHistory>
+{
+    public void Configure(EntityTypeBuilder<DoctorDynamicProfileHistory> builder)
+    {
+        builder.ToTable("DoctorDynamicProfileHistories");
+        builder.HasKey(dp => dp.Id);
+        builder.Property(dp => dp.Id).ValueGeneratedOnAdd();
+        builder.Property(dp => dp.DoctorId).IsRequired();
+        builder.Property(dp => dp.JsonData).IsRequired();
+        builder.Property(dp => dp.IsLatest).IsRequired().HasDefaultValue(true);
+        builder
+            .HasOne(dp => dp.Doctor)
+            .WithMany(d => d.DoctorDynamicProfileHistories)
+            .HasForeignKey(dp => dp.DoctorId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
