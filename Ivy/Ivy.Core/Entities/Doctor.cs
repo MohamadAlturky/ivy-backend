@@ -6,6 +6,9 @@ public class Doctor
     public User User { get; set; } = null!;
     public string ProfileImageUrl { get; set; } = null!;
     public bool IsProfileCompleted { get; set; }
+
+    public ICollection<DoctorMedicalSpeciality> DoctorMedicalSpecialities { get; set; } =
+        new List<DoctorMedicalSpeciality>();
 }
 
 public class DoctorClinic : BaseEntity<int>

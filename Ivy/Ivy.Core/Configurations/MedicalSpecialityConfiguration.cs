@@ -43,5 +43,11 @@ public class MedicalSpecialityConfiguration : IEntityTypeConfiguration<MedicalSp
 
         // Global Query Filter for soft delete
         builder.HasQueryFilter(ms => !ms.IsDeleted);
+
+        builder
+            .HasMany(ms => ms.DoctorMedicalSpecialities)
+            .WithOne(dms => dms.MedicalSpeciality)
+            .HasForeignKey(dms => dms.MedicalSpecialityId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

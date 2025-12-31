@@ -10,18 +10,21 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     {
         builder.HasKey(d => d.UserId);
 
-        builder.Property(d => d.ProfileImageUrl)
-            .HasMaxLength(500)
-            .IsRequired();
+        builder.Property(d => d.ProfileImageUrl).HasMaxLength(500).IsRequired();
 
-        builder.Property(d => d.IsProfileCompleted)
-            .IsRequired()
-            .HasDefaultValue(false);
+        builder.Property(d => d.IsProfileCompleted).IsRequired().HasDefaultValue(false);
 
         // Configure relationship with User
-        builder.HasOne(d => d.User)
+        builder
+            .HasOne(d => d.User)
             .WithOne()
             .HasForeignKey<Doctor>(d => d.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasMany(d => d.DoctorMedicalSpecialities)
+            .WithOne(dms => dms.Doctor)
+            .HasForeignKey(dms => dms.DoctorId)
             .OnDelete(DeleteBehavior.Cascade);
 
         // Configure table name
