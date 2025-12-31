@@ -31,3 +31,61 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.ToTable("Doctors");
     }
 }
+
+public class DoctorClinicConfiguration : IEntityTypeConfiguration<DoctorClinic>
+{
+    public void Configure(EntityTypeBuilder<DoctorClinic> builder)
+    {
+        builder.ToTable("DoctorClinics");
+        builder.HasKey(dc => dc.Id);
+        builder.Property(dc => dc.Id).ValueGeneratedOnAdd();
+        builder.Property(dc => dc.DoctorId).IsRequired();
+        builder.Property(dc => dc.ClinicId).IsRequired();
+        builder
+            .HasOne(dc => dc.Doctor)
+            .WithMany()
+            .HasForeignKey(dc => dc.DoctorId)
+            .OnDelete(DeleteBehavior.Cascade);
+        builder
+            .HasOne(dc => dc.Clinic)
+            .WithMany()
+            .HasForeignKey(dc => dc.ClinicId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
+
+public class DoctorWorkingTimesConfiguration : IEntityTypeConfiguration<DoctorWorkingTimes>
+{
+    public void Configure(EntityTypeBuilder<DoctorWorkingTimes> builder)
+    {
+        builder.ToTable("DoctorWorkingTimes");
+        builder.HasKey(dw => dw.Id);
+        builder.Property(dw => dw.Id).ValueGeneratedOnAdd();
+        builder.Property(dw => dw.DoctorClinicId).IsRequired();
+        builder.Property(dw => dw.StartTime).IsRequired();
+        builder.Property(dw => dw.EndTime).IsRequired();
+        builder
+            .HasOne(dw => dw.DoctorClinic)
+            .WithMany(dc => dc.DoctorWorkingTimes)
+            .HasForeignKey(dw => dw.DoctorClinicId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
+
+public class DoctorBusinessTimesConfiguration : IEntityTypeConfiguration<DoctorBusinessTimes>
+{
+    public void Configure(EntityTypeBuilder<DoctorBusinessTimes> builder)
+    {
+        builder.ToTable("DoctorBusinessTimes");
+        builder.HasKey(dbh => dbh.Id);
+        builder.Property(dbh => dbh.Id).ValueGeneratedOnAdd();
+        builder.Property(dbh => dbh.DoctorClinicId).IsRequired();
+        builder.Property(dbh => dbh.StartTime).IsRequired();
+        builder.Property(dbh => dbh.EndTime).IsRequired();
+        builder
+            .HasOne(dbh => dbh.DoctorClinic)
+            .WithMany(dc => dc.DoctorBusinessTimes)
+            .HasForeignKey(dbh => dbh.DoctorClinicId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}

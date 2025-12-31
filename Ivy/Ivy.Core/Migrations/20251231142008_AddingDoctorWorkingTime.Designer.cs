@@ -4,6 +4,7 @@ using Ivy.Core.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ivy.Core.Migrations
 {
     [DbContext(typeof(IvyContext))]
-    partial class IvyContextModelSnapshot : ModelSnapshot
+    [Migration("20251231142008_AddingDoctorWorkingTime")]
+    partial class AddingDoctorWorkingTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -426,45 +429,6 @@ namespace Ivy.Core.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Doctors", (string)null);
-                });
-
-            modelBuilder.Entity("Ivy.Core.Entities.DoctorBusinessTimes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DoctorClinicId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorClinicId");
-
-                    b.ToTable("DoctorBusinessTimes", (string)null);
                 });
 
             modelBuilder.Entity("Ivy.Core.Entities.DoctorClinic", b =>
@@ -928,17 +892,6 @@ namespace Ivy.Core.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Ivy.Core.Entities.DoctorBusinessTimes", b =>
-                {
-                    b.HasOne("Ivy.Core.Entities.DoctorClinic", "DoctorClinic")
-                        .WithMany("DoctorBusinessTimes")
-                        .HasForeignKey("DoctorClinicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DoctorClinic");
-                });
-
             modelBuilder.Entity("Ivy.Core.Entities.DoctorClinic", b =>
                 {
                     b.HasOne("Ivy.Core.Entities.Clinic", "Clinic")
@@ -1051,8 +1004,6 @@ namespace Ivy.Core.Migrations
 
             modelBuilder.Entity("Ivy.Core.Entities.DoctorClinic", b =>
                 {
-                    b.Navigation("DoctorBusinessTimes");
-
                     b.Navigation("DoctorWorkingTimes");
                 });
 
