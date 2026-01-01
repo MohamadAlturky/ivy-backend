@@ -108,3 +108,28 @@ public class DoctorDynamicProfileHistoryConfiguration
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
+
+public class DoctorAppointmentBusinessTimesConfiguration
+    : IEntityTypeConfiguration<DoctorAppointmentBusinessTimes>
+{
+    public void Configure(EntityTypeBuilder<DoctorAppointmentBusinessTimes> builder)
+    {
+        builder.ToTable("DoctorAppointmentBusinessTimes");
+        builder.HasKey(dabt => dabt.Id);
+        builder.Property(dabt => dabt.Id).ValueGeneratedOnAdd();
+        builder.Property(dabt => dabt.AppointmentId).IsRequired();
+        builder.Property(dabt => dabt.DoctorClinicId).IsRequired();
+        builder.Property(dabt => dabt.StartTime).IsRequired();
+        builder.Property(dabt => dabt.EndTime).IsRequired();
+        builder
+            .HasOne(dabt => dabt.Appointment)
+            .WithMany()
+            .HasForeignKey(dabt => dabt.AppointmentId)
+            .OnDelete(DeleteBehavior.Cascade);
+        builder
+            .HasOne(dabt => dabt.DoctorClinic)
+            .WithMany(dc => dc.DoctorAppointmentBusinessTimes)
+            .HasForeignKey(dabt => dabt.DoctorClinicId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
