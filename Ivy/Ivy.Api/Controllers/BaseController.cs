@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Ivy.Api.DTOs;
 using Ivy.Api.Services;
 using IvyBackend;
@@ -128,5 +129,15 @@ public abstract class BaseController : ControllerBase
             }
         }
         return "en";
+    }
+
+    protected int GetUserId()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+        {
+            return 0;
+        }
+        return userId;
     }
 }
