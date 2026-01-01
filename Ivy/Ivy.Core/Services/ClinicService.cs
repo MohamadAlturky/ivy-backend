@@ -514,7 +514,8 @@ public class ClinicService : IClinicService
         }
         catch (Exception)
         {
-            return Result<IEnumerable<DoctorClinic>>.Error("CLINIC_DOCTORS_RETRIEVAL_FAILED", Enumerable.Empty<DoctorClinic>());
+            return Result<IEnumerable<DoctorClinic>>.Error("CLINIC_DOCTORS_RETRIEVAL_FAILED",
+                Enumerable.Empty<DoctorClinic>());
         }
     }
 }

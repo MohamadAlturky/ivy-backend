@@ -140,8 +140,8 @@ public class GovernorateService : IGovernorateService
 
             // Check for duplicate name (excluding current governorate)
             var duplicateExists = await _context.Governorates
-                .AnyAsync(g => g.Id != id && 
-                          (g.NameAr == governorate.NameAr || g.NameEn == governorate.NameEn));
+                .AnyAsync(g => g.Id != id &&
+                               (g.NameAr == governorate.NameAr || g.NameEn == governorate.NameEn));
 
             if (duplicateExists)
             {

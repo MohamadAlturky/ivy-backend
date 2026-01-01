@@ -8,6 +8,7 @@ public class DoctorAppointmentBusinessTimes : BaseEntity<int>
     public DoctorClinic DoctorClinic { get; set; } = null!;
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
+
     public AppointmentBusinessTimesStatus Status { get; set; } =
         AppointmentBusinessTimesStatus.Pending;
 }

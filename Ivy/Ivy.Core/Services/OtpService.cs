@@ -102,6 +102,7 @@ public class OtpService : IOtpService
         {
             otp += _random.Next(0, 10).ToString();
         }
+
         return otp;
     }
 

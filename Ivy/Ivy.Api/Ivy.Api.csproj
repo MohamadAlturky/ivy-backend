@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ivy.Contracts\Ivy.Contracts.csproj" />
     <ProjectReference Include="..\Ivy.Core\Ivy.Core.csproj" />
   </ItemGroup>
   <PropertyGroup>

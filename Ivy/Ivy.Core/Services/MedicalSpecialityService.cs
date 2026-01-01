@@ -48,10 +48,10 @@ public class MedicalSpecialityService : IMedicalSpecialityService
             // Apply general search term (searches in both name and description fields)
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                query = query.Where(ms => ms.NameAr.Contains(searchTerm) || 
-                                         ms.NameEn.Contains(searchTerm) ||
-                                         ms.DescriptionAr.Contains(searchTerm) ||
-                                         ms.DescriptionEn.Contains(searchTerm));
+                query = query.Where(ms => ms.NameAr.Contains(searchTerm) ||
+                                          ms.NameEn.Contains(searchTerm) ||
+                                          ms.DescriptionAr.Contains(searchTerm) ||
+                                          ms.DescriptionEn.Contains(searchTerm));
             }
 
             if (isActive.HasValue)
@@ -69,13 +69,16 @@ public class MedicalSpecialityService : IMedicalSpecialityService
                 .Take(pageSize)
                 .ToListAsync();
 
-            var paginatedResult = PaginatedResult<MedicalSpeciality>.Create(medicalSpecialities, totalCount, page, pageSize);
-            return Result<PaginatedResult<MedicalSpeciality>>.Ok("MEDICAL_SPECIALITIES_RETRIEVED_SUCCESS", paginatedResult);
+            var paginatedResult =
+                PaginatedResult<MedicalSpeciality>.Create(medicalSpecialities, totalCount, page, pageSize);
+            return Result<PaginatedResult<MedicalSpeciality>>.Ok("MEDICAL_SPECIALITIES_RETRIEVED_SUCCESS",
+                paginatedResult);
         }
         catch (Exception _)
         {
             var emptyResult = new PaginatedResult<MedicalSpeciality>();
-            return Result<PaginatedResult<MedicalSpeciality>>.Error("MEDICAL_SPECIALITIES_RETRIEVAL_FAILED", emptyResult);
+            return Result<PaginatedResult<MedicalSpeciality>>.Error("MEDICAL_SPECIALITIES_RETRIEVAL_FAILED",
+                emptyResult);
         }
     }
 
@@ -137,8 +140,8 @@ public class MedicalSpecialityService : IMedicalSpecialityService
 
             // Check for duplicate name (excluding current medical speciality)
             var duplicateExists = await _context.MedicalSpecialities
-                .AnyAsync(ms => ms.Id != id && 
-                          (ms.NameAr == medicalSpeciality.NameAr || ms.NameEn == medicalSpeciality.NameEn));
+                .AnyAsync(ms => ms.Id != id &&
+                                (ms.NameAr == medicalSpeciality.NameAr || ms.NameEn == medicalSpeciality.NameEn));
 
             if (duplicateExists)
             {

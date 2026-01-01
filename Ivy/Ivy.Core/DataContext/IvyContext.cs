@@ -7,7 +7,9 @@ namespace Ivy.Core.DataContext;
 public class IvyContext : DbContext
 {
     public IvyContext(DbContextOptions<IvyContext> options)
-        : base(options) { }
+        : base(options)
+    {
+    }
 
     public DbSet<City> Cities { get; set; } = null!;
     public DbSet<Governorate> Governorates { get; set; } = null!;

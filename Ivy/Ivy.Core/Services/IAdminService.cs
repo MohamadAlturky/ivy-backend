@@ -28,7 +28,8 @@ public interface IAdminService
     /// <param name="currentPassword">Current password for verification</param>
     /// <param name="newPassword">New password (optional)</param>
     /// <returns>Result with updated admin data</returns>
-    Task<Result<Admin>> UpdateProfileAsync(int adminId, string email, string? currentPassword = null, string? newPassword = null);
+    Task<Result<Admin>> UpdateProfileAsync(int adminId, string email, string? currentPassword = null,
+        string? newPassword = null);
 
     /// <summary>
     /// Checks if an admin exists by email

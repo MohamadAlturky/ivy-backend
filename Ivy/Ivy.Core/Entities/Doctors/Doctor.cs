@@ -9,6 +9,7 @@ public class Doctor
 
     public ICollection<DoctorMedicalSpeciality> DoctorMedicalSpecialities { get; set; } =
         new List<DoctorMedicalSpeciality>();
+
     public ICollection<DoctorDynamicProfileHistory> DoctorDynamicProfileHistories { get; set; } =
         [];
 }

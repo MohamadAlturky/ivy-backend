@@ -85,7 +85,8 @@ public class AdminService : IAdminService
         }
     }
 
-    public async Task<Result<Admin>> UpdateProfileAsync(int adminId, string email, string? currentPassword = null, string? newPassword = null)
+    public async Task<Result<Admin>> UpdateProfileAsync(int adminId, string email, string? currentPassword = null,
+        string? newPassword = null)
     {
         try
         {

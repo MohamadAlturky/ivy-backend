@@ -409,7 +409,7 @@ public class PhoneNumberValidator
     public static bool ValidatePhoneNumber(string phoneNumber)
     {
         return !string.IsNullOrWhiteSpace(phoneNumber)
-            && phoneNumber.Length == 10
-            && phoneNumber.StartsWith("09");
+               && phoneNumber.Length == 10
+               && phoneNumber.StartsWith("09");
     }
 }

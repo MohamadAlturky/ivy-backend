@@ -90,9 +90,9 @@ public class DoctorAuthService : IDoctorAuthService
             await _context.SaveChangesAsync();
 
             // Create doctor entity
-            var doctor = new Doctor 
-            { 
-                UserId = user.Id, 
+            var doctor = new Doctor
+            {
+                UserId = user.Id,
                 User = user,
                 ProfileImageUrl = string.Empty,
                 IsProfileCompleted = false
