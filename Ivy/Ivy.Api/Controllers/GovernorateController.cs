@@ -87,4 +87,12 @@ public class GovernorateController : BaseController
         var result = await _governorateService.DeleteAsync(id);
         return HandleResult(result);
     }
+    [HttpGet("dropdown")]
+    public async Task<IActionResult> GetDropdownGovernorates(
+        [FromQuery] string? name = null
+    )
+    {
+        var result = await _governorateService.DropDownAsync(GetLanguage(), name: name);
+        return HandleResult(result);
+    }
 }

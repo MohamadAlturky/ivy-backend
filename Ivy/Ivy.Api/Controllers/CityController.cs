@@ -28,13 +28,13 @@ public class CityController : BaseController
     )
     {
         var result = await _cityService.GetAllAsync(
-                page:page,
-                pageSize:pageSize,
-                name:name,
-                governorateId:governorateId,
-                isActive:isActive
+                page: page,
+                pageSize: pageSize,
+                name: name,
+                governorateId: governorateId,
+                isActive: isActive
             );
-            return HandleResult(result);
+        return HandleResult(result);
     }
     [HttpGet("localized")]
     public async Task<IActionResult> GetAllLocalizedCities(
@@ -46,7 +46,7 @@ public class CityController : BaseController
         [FromQuery] bool? isActive = null
     )
     {
-        var result = await _cityService.GetAllLocalizedAsync(language:language, page:page, pageSize:pageSize, name:name, governorateId:governorateId, isActive:isActive);
+        var result = await _cityService.GetAllLocalizedAsync(language: language, page: page, pageSize: pageSize, name: name, governorateId: governorateId, isActive: isActive);
         return HandleResult(result);
     }
 
@@ -80,6 +80,15 @@ public class CityController : BaseController
     public async Task<IActionResult> DeleteCity(int id)
     {
         var result = await _cityService.DeleteAsync(id);
+        return HandleResult(result);
+    }
+    [HttpGet("dropdown")]
+    public async Task<IActionResult> GetDropdownCities(
+        [FromQuery] string? name = null,
+        [FromQuery] int? governorateId = null
+    )
+    {
+        var result = await _cityService.DropDownAsync(GetLanguage(), name: name, governorateId: governorateId);
         return HandleResult(result);
     }
 }

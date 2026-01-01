@@ -30,3 +30,10 @@ public class CityLocalizedDto
     public GovernorateLocalizedDto Governorate { get; set; } = null!;
     public bool IsActive { get; set; }
 }
+
+public class CityDropDownDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public GovernorateDropDownDto Governorate { get; set; } = null!;
+}

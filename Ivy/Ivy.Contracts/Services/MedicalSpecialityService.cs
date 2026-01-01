@@ -21,6 +21,10 @@ public interface IMedicalSpecialityService
         string? name = null,
         bool? isActive = null
     );
+    Task<Result<List<MedicalSpecialityDropDownDto>>> DropDownAsync(
+        string language = "en",
+        string? name = null
+    );
     Task<Result<MedicalSpecialityDto>> CreateAsync(CreateMedicalSpecialityDto dto);
     Task<Result<MedicalSpecialityDto>> UpdateAsync(int id, UpdateMedicalSpecialityDto dto);
     Task<Result> DeleteAsync(int id);
@@ -75,7 +79,12 @@ public class MedicalSpecialityService : IMedicalSpecialityService
             })
             .ToListAsync();
 
-        var result = PaginatedResult<MedicalSpecialityDto>.Create(items, totalCount, page, pageSize);
+        var result = PaginatedResult<MedicalSpecialityDto>.Create(
+            items,
+            totalCount,
+            page,
+            pageSize
+        );
 
         return Result<PaginatedResult<MedicalSpecialityDto>>.Ok(
             MedicalSpecialityServiceMessageCodes.SUCCESS,
@@ -88,7 +97,10 @@ public class MedicalSpecialityService : IMedicalSpecialityService
         // Validation
         if (string.IsNullOrWhiteSpace(dto.NameAr) || string.IsNullOrWhiteSpace(dto.NameEn))
         {
-            return Result<MedicalSpecialityDto>.Error(MedicalSpecialityServiceMessageCodes.INVALID_DATA, null!);
+            return Result<MedicalSpecialityDto>.Error(
+                MedicalSpecialityServiceMessageCodes.INVALID_DATA,
+                null!
+            );
         }
 
         // Check for duplicate names
@@ -127,21 +139,33 @@ public class MedicalSpecialityService : IMedicalSpecialityService
             IsActive = entity.IsActive,
         };
 
-        return Result<MedicalSpecialityDto>.Ok(MedicalSpecialityServiceMessageCodes.CREATED, resultDto);
+        return Result<MedicalSpecialityDto>.Ok(
+            MedicalSpecialityServiceMessageCodes.CREATED,
+            resultDto
+        );
     }
 
-    public async Task<Result<MedicalSpecialityDto>> UpdateAsync(int id, UpdateMedicalSpecialityDto dto)
+    public async Task<Result<MedicalSpecialityDto>> UpdateAsync(
+        int id,
+        UpdateMedicalSpecialityDto dto
+    )
     {
         if (string.IsNullOrWhiteSpace(dto.NameAr) || string.IsNullOrWhiteSpace(dto.NameEn))
         {
-            return Result<MedicalSpecialityDto>.Error(MedicalSpecialityServiceMessageCodes.INVALID_DATA, null!);
+            return Result<MedicalSpecialityDto>.Error(
+                MedicalSpecialityServiceMessageCodes.INVALID_DATA,
+                null!
+            );
         }
 
         var entity = await _context.Set<MedicalSpeciality>().FindAsync(id);
 
         if (entity == null)
         {
-            return Result<MedicalSpecialityDto>.Error(MedicalSpecialityServiceMessageCodes.NOT_FOUND, null!);
+            return Result<MedicalSpecialityDto>.Error(
+                MedicalSpecialityServiceMessageCodes.NOT_FOUND,
+                null!
+            );
         }
 
         // Update fields
@@ -164,7 +188,10 @@ public class MedicalSpecialityService : IMedicalSpecialityService
             IsActive = entity.IsActive,
         };
 
-        return Result<MedicalSpecialityDto>.Ok(MedicalSpecialityServiceMessageCodes.UPDATED, resultDto);
+        return Result<MedicalSpecialityDto>.Ok(
+            MedicalSpecialityServiceMessageCodes.UPDATED,
+            resultDto
+        );
     }
 
     public async Task<Result> DeleteAsync(int id)
@@ -230,6 +257,36 @@ public class MedicalSpecialityService : IMedicalSpecialityService
         return Result<PaginatedResult<MedicalSpecialityLocalizedDto>>.Ok(
             MedicalSpecialityServiceMessageCodes.SUCCESS,
             result
+        );
+    }
+
+    public async Task<Result<List<MedicalSpecialityDropDownDto>>> DropDownAsync(
+        string language = "en",
+        string? name = null
+    )
+    {
+        var query = _context.Set<MedicalSpeciality>().AsQueryable();
+
+        // Filtering
+        query = query.Where(x => x.IsActive == true);
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            query = query.Where(x => x.NameAr.Contains(name) || x.NameEn.Contains(name));
+        }
+
+        var items = await query
+            .OrderBy(x => x.Id)
+            .Select(x => new MedicalSpecialityDropDownDto
+            {
+                Id = x.Id,
+                Name = language == "ar" ? x.NameAr : x.NameEn,
+            })
+            .ToListAsync();
+
+        return Result<List<MedicalSpecialityDropDownDto>>.Ok(
+            MedicalSpecialityServiceMessageCodes.SUCCESS,
+            items
         );
     }
 

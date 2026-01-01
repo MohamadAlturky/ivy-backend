@@ -25,6 +25,12 @@ public interface ICityService
         int? governorateId = null,
         bool? isActive = null
     );
+    Task<Result<List<CityDropDownDto>>> DropDownAsync(
+        string language = "en",
+        string? name = null,
+        int? governorateId = null
+    );
+
     Task<Result> ToggleStatusAsync(int id);
     Task<Result<CityDto>> CreateAsync(CreateCityDto dto);
     Task<Result<CityDto>> UpdateAsync(int id, UpdateCityDto dto);
@@ -278,6 +284,47 @@ public class CityService : ICityService
             CityServiceMessageCodes.SUCCESS,
             result
         );
+    }
+
+    public async Task<Result<List<CityDropDownDto>>> DropDownAsync(
+        string language = "en",
+        string? name = null,
+        int? governorateId = null
+    )
+    {
+        var query = _context.Set<City>().AsQueryable();
+
+        // Filtering
+        query = query.Where(x => x.IsActive == true);
+
+        if (governorateId.HasValue)
+        {
+            query = query.Where(x => x.GovernorateId == governorateId.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            query = query.Where(x => x.NameAr.Contains(name) || x.NameEn.Contains(name));
+        }
+
+        // Pagination
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderBy(x => x.Id)
+            .Select(x => new CityDropDownDto
+            {
+                Id = x.Id,
+                Name = language == "ar" ? x.NameAr : x.NameEn,
+                Governorate = new GovernorateDropDownDto
+                {
+                    Id = x.GovernorateId,
+                    Name = language == "ar" ? x.Governorate.NameAr : x.Governorate.NameEn,
+                },
+            })
+            .ToListAsync();
+
+        return Result<List<CityDropDownDto>>.Ok(CityServiceMessageCodes.SUCCESS, items);
     }
 
     public async Task<Result> ToggleStatusAsync(int id)

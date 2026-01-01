@@ -87,4 +87,12 @@ public class MedicalSpecialityController : BaseController
         var result = await _medicalSpecialityService.DeleteAsync(id);
         return HandleResult(result);
     }
+    [HttpGet("dropdown")]
+    public async Task<IActionResult> GetDropdownMedicalSpecialities(
+        [FromQuery] string? name = null
+    )
+    {
+        var result = await _medicalSpecialityService.DropDownAsync(GetLanguage(), name: name);
+        return HandleResult(result);
+    }
 }

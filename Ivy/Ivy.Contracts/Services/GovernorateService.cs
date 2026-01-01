@@ -21,6 +21,10 @@ public interface IGovernorateService
         string? name = null,
         bool? isActive = null
     );
+    Task<Result<List<GovernorateDropDownDto>>> DropDownAsync(
+        string language = "en",
+        string? name = null
+    );
     Task<Result<GovernorateDto>> CreateAsync(CreateGovernorateDto dto);
     Task<Result<GovernorateDto>> UpdateAsync(int id, UpdateGovernorateDto dto);
     Task<Result> DeleteAsync(int id);
@@ -218,6 +222,39 @@ public class GovernorateService : IGovernorateService
         return Result<PaginatedResult<GovernorateLocalizedDto>>.Ok(
             GovernorateServiceMessageCodes.SUCCESS,
             result
+        );
+    }
+
+    public async Task<Result<List<GovernorateDropDownDto>>> DropDownAsync(
+        string language = "en",
+        string? name = null
+    )
+    {
+        var query = _context.Set<Governorate>().AsQueryable();
+
+        // Filtering
+        query = query.Where(x => x.IsActive == true);
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            query = query.Where(x => x.NameAr.Contains(name) || x.NameEn.Contains(name));
+        }
+
+        // Pagination
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderBy(x => x.Id)
+            .Select(x => new GovernorateDropDownDto
+            {
+                Id = x.Id,
+                Name = language == "ar" ? x.NameAr : x.NameEn,
+            })
+            .ToListAsync();
+
+        return Result<List<GovernorateDropDownDto>>.Ok(
+            GovernorateServiceMessageCodes.SUCCESS,
+            items
         );
     }
 
