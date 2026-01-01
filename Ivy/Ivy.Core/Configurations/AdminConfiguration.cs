@@ -115,5 +115,6 @@ public class AdminPermissionConfiguration : IEntityTypeConfiguration<AdminPermis
         builder.Property(ap => ap.NameEn).IsRequired().HasMaxLength(100);
         builder.Property(ap => ap.DescriptionAr).IsRequired().HasMaxLength(500);
         builder.Property(ap => ap.DescriptionEn).IsRequired().HasMaxLength(500);
+        builder.Property(ap => ap.Code).IsRequired().HasMaxLength(100);
     }
 }
