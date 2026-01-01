@@ -404,11 +404,12 @@ public class ClinicController : BaseController
                         UpdatedAt = clinic.Location.UpdatedAt,
                     }
                     : null,
-            ClinicImages = clinic.ClinicImages.Select(ci => new ClinicImageDto
+            ClinicImages = clinic.ClinicMedias.Select(ci => new ClinicImageDto
             {
                 Id = ci.Id,
                 ClinicId = ci.ClinicId,
-                ImageUrl = ci.ImageUrl,
+                MediaUrl = ci.MediaUrl,
+                MediaType = ci.MediaType,
                 CreatedAt = ci.CreatedAt,
                 UpdatedAt = ci.UpdatedAt,
             }).ToList()

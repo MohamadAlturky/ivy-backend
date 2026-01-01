@@ -37,7 +37,7 @@ public class ClinicService : IClinicService
 
             var query = _context
                 .Clinics.Include(c => c.Location)
-                .Include(c => c.ClinicImages)
+                .Include(c => c.ClinicMedias)
                 .AsQueryable();
 
             // Apply filters
@@ -102,7 +102,7 @@ public class ClinicService : IClinicService
         {
             var clinic = await _context
                 .Clinics.Include(c => c.Location)
-                .Include(c => c.ClinicImages)
+                .Include(c => c.ClinicMedias)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (clinic == null)
@@ -159,7 +159,7 @@ public class ClinicService : IClinicService
             // Load the created clinic with its location and images
             var createdClinic = await _context
                 .Clinics.Include(c => c.Location)
-                .Include(c => c.ClinicImages)
+                .Include(c => c.ClinicMedias)
                 .FirstAsync(c => c.Id == clinic.Id);
 
             return Result<Clinic>.Ok("CLINIC_CREATED_SUCCESS", createdClinic);
@@ -224,7 +224,7 @@ public class ClinicService : IClinicService
             // Load the updated clinic with its location and images
             var updatedClinic = await _context
                 .Clinics.Include(c => c.Location)
-                .Include(c => c.ClinicImages)
+                .Include(c => c.ClinicMedias)
                 .FirstAsync(c => c.Id == id);
 
             return Result<Clinic>.Ok("CLINIC_UPDATED_SUCCESS", updatedClinic);
@@ -266,7 +266,7 @@ public class ClinicService : IClinicService
         {
             var clinics = await _context
                 .Clinics.Include(c => c.Location)
-                .Include(c => c.ClinicImages)
+                .Include(c => c.ClinicMedias)
                 .Where(c => c.LocationId == locationId)
                 .OrderBy(c => c.NameEn)
                 .ToListAsync();

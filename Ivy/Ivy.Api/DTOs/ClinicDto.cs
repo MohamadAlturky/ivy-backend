@@ -118,7 +118,8 @@ public class ClinicImageDto
 {
     public int Id { get; set; }
     public int ClinicId { get; set; }
-    public string ImageUrl { get; set; } = string.Empty;
+    public string MediaUrl { get; set; } = string.Empty;
+    public MediaType MediaType { get; set; } = MediaType.Image;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

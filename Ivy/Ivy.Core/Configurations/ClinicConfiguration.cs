@@ -49,7 +49,7 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
             .HasConstraintName("FK_Clinics_Locations_LocationId");
 
         builder
-            .HasMany(c => c.ClinicImages)
+            .HasMany(c => c.ClinicMedias)
             .WithOne()
             .HasForeignKey(ci => ci.ClinicId)
             .OnDelete(DeleteBehavior.Cascade)
@@ -90,11 +90,11 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
     }
 }
 
-public class ClinicImagesConfiguration : IEntityTypeConfiguration<ClinicImages>
+public class ClinicImagesConfiguration : IEntityTypeConfiguration<ClinicMedia>
 {
-    public void Configure(EntityTypeBuilder<ClinicImages> builder)
+    public void Configure(EntityTypeBuilder<ClinicMedia> builder)
     {
-        builder.ToTable("ClinicImages");
+        builder.ToTable("ClinicMedias");
 
         // Primary Key
         builder.HasKey(ci => ci.Id);
@@ -114,12 +114,14 @@ public class ClinicImagesConfiguration : IEntityTypeConfiguration<ClinicImages>
         // ClinicImages-specific Properties
         builder.Property(ci => ci.ClinicId).IsRequired();
 
-        builder.Property(ci => ci.ImageUrl).IsRequired().HasMaxLength(500);
+        builder.Property(ci => ci.MediaUrl).IsRequired().HasMaxLength(500);
+
+        builder.Property(ci => ci.MediaType).IsRequired();
 
         // Indexes
-        builder.HasIndex(ci => ci.ClinicId).HasDatabaseName("IX_ClinicImages_ClinicId");
+        builder.HasIndex(ci => ci.ClinicId).HasDatabaseName("IX_ClinicMedias_ClinicId");
 
-        builder.HasIndex(ci => ci.IsDeleted).HasDatabaseName("IX_ClinicImages_IsDeleted");
+        builder.HasIndex(ci => ci.IsDeleted).HasDatabaseName("IX_ClinicMedias_IsDeleted");
 
         // Global Query Filter for soft delete
         builder.HasQueryFilter(ci => !ci.IsDeleted);

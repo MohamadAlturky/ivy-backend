@@ -10,11 +10,19 @@ public class Clinic : BaseEntity<int>
     public string ContactEmail { get; set; } = string.Empty;
     public int LocationId { get; set; }
     public Location Location { get; set; } = null!;
-    public ICollection<ClinicImages> ClinicImages { get; set; } = [];
+    public ICollection<ClinicMedia> ClinicMedias { get; set; } = [];
 }
 
-public class ClinicImages : BaseEntity<int>
+public class ClinicMedia : BaseEntity<int>
 {
     public int ClinicId { get; set; }
-    public string ImageUrl { get; set; } = string.Empty;
+    public string MediaUrl { get; set; } = string.Empty;
+    public MediaType MediaType { get; set; } = MediaType.Image;
+}
+
+public enum MediaType
+{
+    Image = 1,
+    Video = 2,
+    Document = 3,
 }
