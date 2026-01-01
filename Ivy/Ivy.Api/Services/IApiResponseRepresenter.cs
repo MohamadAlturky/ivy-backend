@@ -12,7 +12,7 @@ public interface IApiResponseRepresenter
     /// <param name="result">The result object</param>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with appropriate status code and ApiResponse</returns>
-    ActionResult<ApiResponse> CreateResponse(Result result, string? language = null);
+    IActionResult CreateResponse(Result result, string? language = null);
 
     /// <summary>
     /// Creates an ActionResult from a Result&lt;T&gt; object
@@ -21,7 +21,7 @@ public interface IApiResponseRepresenter
     /// <param name="result">The result object</param>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with appropriate status code and ApiResponse&lt;T&gt;</returns>
-    ActionResult<ApiResponse<T>> CreateResponse<T>(Result<T> result, string? language = null);
+    IActionResult CreateResponse<T>(Result<T> result, string? language = null);
 
     /// <summary>
     /// Creates a validation error response
@@ -30,7 +30,7 @@ public interface IApiResponseRepresenter
     /// <param name="errors">The validation errors</param>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with validation error response</returns>
-    ActionResult<ApiResponse<T>> CreateValidationErrorResponse<T>(object errors, string? language = null);
+    IActionResult CreateValidationErrorResponse<T>(object errors, string? language = null);
 
     /// <summary>
     /// Creates an internal error response
@@ -38,12 +38,12 @@ public interface IApiResponseRepresenter
     /// <typeparam name="T">The data type</typeparam>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with internal error response</returns>
-    ActionResult<ApiResponse<T>> CreateInternalErrorResponse<T>(string? language = null);
+    IActionResult CreateInternalErrorResponse<T>(string? language = null);
 
     /// <summary>
     /// Creates an internal error response without data
     /// </summary>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with internal error response</returns>
-    ActionResult<ApiResponse> CreateInternalErrorResponse(string? language = null);
+    IActionResult CreateInternalErrorResponse(string? language = null);
 }

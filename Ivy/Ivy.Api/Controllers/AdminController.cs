@@ -33,7 +33,7 @@ public class AdminController : BaseController
     /// <param name="loginDto">Admin login credentials</param>
     /// <returns>Login result with admin data and JWT token</returns>
     [HttpPost("login")]
-    public async Task<ActionResult<ApiResponse<AdminAuthResponseDto>>> Login(
+    public async Task<IActionResult> Login(
         [FromBody] AdminLoginDto loginDto
     )
     {
@@ -80,7 +80,7 @@ public class AdminController : BaseController
     /// <returns>Current admin profile data</returns>
     [HttpGet("profile")]
     [Authorize(Roles = "admin")]
-    public async Task<ActionResult<ApiResponse<AdminDto>>> GetProfile()
+    public async Task<IActionResult> GetProfile()
     {
         try
         {
@@ -182,7 +182,7 @@ public class AdminController : BaseController
     /// <returns>Result indicating password change success</returns>
     [HttpPut("change-password")]
     [Authorize(Roles = "admin")]
-    public async Task<ActionResult<ApiResponse<string>>> ChangePassword(
+    public async Task<IActionResult> ChangePassword(
         [FromBody] ChangeAdminPasswordDto changePasswordDto
     )
     {

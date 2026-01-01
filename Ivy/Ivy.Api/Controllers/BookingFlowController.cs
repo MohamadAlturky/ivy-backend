@@ -10,7 +10,7 @@ public class BookingFlowController : BaseController
     {
     }
     [HttpGet("doctors")]
-    public async Task<ActionResult<ApiResponse<DocktorsListingResultDto>>> GetDoctorsListing()
+    public async Task<IActionResult> GetDoctorsListing()
     {
         await Task.Delay(1000);
         var result = Result<DocktorsListingResultDto>.Ok("DOCTORS_LISTING_FETCHED", new DocktorsListingResultDto()
@@ -24,7 +24,7 @@ public class BookingFlowController : BaseController
         return HandleResult(result);
     }
     [HttpGet("doctor/{id}")]
-    public async Task<ActionResult<ApiResponse<DocktorDetailsDto>>> GetDoctorDetails(int id)
+    public async Task<IActionResult> GetDoctorDetails(int id)
     {
         await Task.Delay(1000);
         var result = Result<DocktorDetailsDto>.Ok("DOCTOR_DETAILS_FETCHED",

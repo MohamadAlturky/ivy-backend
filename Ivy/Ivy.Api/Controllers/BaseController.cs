@@ -24,7 +24,7 @@ public abstract class BaseController : ControllerBase
     /// <param name="result">The result object</param>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with proper response</returns>
-    protected ActionResult<ApiResponse> HandleResult(Result result, string? language = null)
+    protected IActionResult HandleResult(Result result, string? language = null)
     {
         return _responseRepresenter.CreateResponse(result, language);
     }
@@ -36,7 +36,7 @@ public abstract class BaseController : ControllerBase
     /// <param name="result">The result object</param>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with proper response</returns>
-    protected ActionResult<ApiResponse<T>> HandleResult<T>(
+    protected IActionResult HandleResult<T>(
         Result<T> result,
         string? language = null
     )
@@ -50,7 +50,7 @@ public abstract class BaseController : ControllerBase
     /// <typeparam name="T">The data type</typeparam>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with validation error response</returns>
-    protected ActionResult<ApiResponse<T>> HandleValidationError<T>(string? language = null)
+    protected IActionResult HandleValidationError<T>(string? language = null)
     {
         return _responseRepresenter.CreateValidationErrorResponse<T>(ModelState, language);
     }
@@ -60,7 +60,7 @@ public abstract class BaseController : ControllerBase
     /// </summary>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with validation error response</returns>
-    protected ActionResult<ApiResponse> HandleValidationError(string? language = null)
+    protected IActionResult HandleValidationError(string? language = null)
     {
         var response = _responseRepresenter.CreateValidationErrorResponse<object>(
             ModelState,
@@ -77,7 +77,7 @@ public abstract class BaseController : ControllerBase
     /// <param name="operationName">Name of the operation for logging</param>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with internal error response</returns>
-    protected ActionResult<ApiResponse<T>> HandleInternalError<T>(
+    protected IActionResult HandleInternalError<T>(
         Exception exception,
         string operationName,
         string? language = null
@@ -94,7 +94,7 @@ public abstract class BaseController : ControllerBase
     /// <param name="operationName">Name of the operation for logging</param>
     /// <param name="language">Optional language override</param>
     /// <returns>ActionResult with internal error response</returns>
-    protected ActionResult<ApiResponse> HandleInternalError(
+    protected IActionResult HandleInternalError(
         Exception exception,
         string operationName,
         string? language = null

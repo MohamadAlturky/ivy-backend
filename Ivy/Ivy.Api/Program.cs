@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Ivy.Contracts.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -136,7 +137,6 @@ using (var scope = app.Services.CreateScope())
     {
         var adminSeederService = scope.ServiceProvider.GetRequiredService<IAdminSeederService>();
         var seedResult = await adminSeederService.SeedDefaultAdminAsync();
-        
         if (seedResult.Success && seedResult.Data)
         {
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();

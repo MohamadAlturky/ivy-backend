@@ -19,7 +19,7 @@ public class ApiResponseRepresenter : IApiResponseRepresenter
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public ActionResult<ApiResponse> CreateResponse(Result result, string? language = null)
+    public IActionResult CreateResponse(Result result, string? language = null)
     {
         var lang = language ?? GetLanguageFromHeader();
         var message = _messageStore.GetMessage(result.MessageCode, lang);
@@ -35,7 +35,7 @@ public class ApiResponseRepresenter : IApiResponseRepresenter
         return new OkObjectResult(apiResponse);
     }
 
-    public ActionResult<ApiResponse<T>> CreateResponse<T>(Result<T> result, string? language = null)
+    public IActionResult CreateResponse<T>(Result<T> result, string? language = null)
     {
         var lang = language ?? GetLanguageFromHeader();
         var message = _messageStore.GetMessage(result.MessageCode, lang);
@@ -52,7 +52,7 @@ public class ApiResponseRepresenter : IApiResponseRepresenter
         return new OkObjectResult(apiResponse);
     }
 
-    public ActionResult<ApiResponse<T>> CreateValidationErrorResponse<T>(
+    public IActionResult CreateValidationErrorResponse<T>(
         object errors,
         string? language = null
     )
@@ -71,7 +71,7 @@ public class ApiResponseRepresenter : IApiResponseRepresenter
         return new OkObjectResult(apiResponse);
     }
 
-    public ActionResult<ApiResponse<T>> CreateInternalErrorResponse<T>(string? language = null)
+    public IActionResult CreateInternalErrorResponse<T>(string? language = null)
     {
         var lang = language ?? GetLanguageFromHeader();
         var message = _messageStore.GetMessage("INTERNAL_ERROR", lang);
@@ -87,7 +87,7 @@ public class ApiResponseRepresenter : IApiResponseRepresenter
         return new OkObjectResult(apiResponse);
     }
 
-    public ActionResult<ApiResponse> CreateInternalErrorResponse(string? language = null)
+    public IActionResult CreateInternalErrorResponse(string? language = null)
     {
         var lang = language ?? GetLanguageFromHeader();
         var message = _messageStore.GetMessage("INTERNAL_ERROR", lang);

@@ -33,7 +33,7 @@ public class DoctorAuthController : BaseController
     /// <param name="registerDto">Doctor registration data</param>
     /// <returns>Registration result with OTP</returns>
     [HttpPost("register")]
-    public async Task<ActionResult<ApiResponse<DoctorRegistrationResponseDto>>> Register(
+    public async Task<IActionResult> Register(
         [FromBody] RegisterDoctorDto registerDto
     )
     {
@@ -86,7 +86,7 @@ public class DoctorAuthController : BaseController
     /// <param name="verifyOtpDto">OTP verification data</param>
     /// <returns>Verification result with doctor data</returns>
     [HttpPost("verify-otp")]
-    public async Task<ActionResult<ApiResponse<DoctorAuthResponseDto>>> VerifyOtp(
+    public async Task<IActionResult> VerifyOtp(
         [FromBody] VerifyDoctorOtpDto verifyOtpDto
     )
     {
@@ -136,7 +136,7 @@ public class DoctorAuthController : BaseController
     /// <param name="loginDto">Login credentials</param>
     /// <returns>Login result with doctor data</returns>
     [HttpPost("login")]
-    public async Task<ActionResult<ApiResponse<DoctorAuthResponseDto>>> Login(
+    public async Task<IActionResult> Login(
         [FromBody] LoginDoctorDto loginDto
     )
     {
@@ -186,7 +186,7 @@ public class DoctorAuthController : BaseController
     /// <param name="forgotPasswordDto">Forgot password data with phone number</param>
     /// <returns>Result with OTP for password reset</returns>
     [HttpPost("forgot-password")]
-    public async Task<ActionResult<ApiResponse<ForgotDoctorPasswordResponseDto>>> ForgotPassword(
+    public async Task<IActionResult> ForgotPassword(
         [FromBody] ForgotDoctorPasswordDto forgotPasswordDto
     )
     {
@@ -229,7 +229,7 @@ public class DoctorAuthController : BaseController
     /// <param name="resetPasswordDto">Password reset data with OTP and new password</param>
     /// <returns>Result indicating password reset success</returns>
     [HttpPost("reset-password")]
-    public async Task<ActionResult<ApiResponse<string>>> ResetPassword(
+    public async Task<IActionResult> ResetPassword(
         [FromBody] ResetDoctorPasswordDto resetPasswordDto
     )
     {
@@ -268,7 +268,7 @@ public class DoctorAuthController : BaseController
     /// <returns>Current doctor profile data</returns>
     [HttpGet("my-profile")]
     [Authorize]
-    public async Task<ActionResult<ApiResponse<DoctorDto>>> GetMyProfile()
+    public async Task<IActionResult> GetMyProfile()
     {
         try
         {

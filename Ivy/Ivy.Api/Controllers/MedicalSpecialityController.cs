@@ -27,7 +27,7 @@ public class MedicalSpecialityController : BaseController
     /// </summary>
     [HttpGet]
     public async Task<
-        ActionResult<ApiResponse<PaginatedResult<MedicalSpecialityDto>>>
+        IActionResult
     > GetAllMedicalSpecialities([FromQuery] MedicalSpecialityQueryDto query)
     {
         try
@@ -83,7 +83,7 @@ public class MedicalSpecialityController : BaseController
     /// Get a specific medical speciality by ID
     /// </summary>
     [HttpGet("{id}")]
-    public async Task<ActionResult<ApiResponse<MedicalSpecialityDto>>> GetMedicalSpeciality(int id)
+    public async Task<IActionResult> GetMedicalSpeciality(int id)
     {
         try
         {
@@ -109,7 +109,7 @@ public class MedicalSpecialityController : BaseController
     /// Create a new medical speciality
     /// </summary>
     [HttpPost]
-    public async Task<ActionResult<ApiResponse<MedicalSpecialityDto>>> CreateMedicalSpeciality(
+    public async Task<IActionResult> CreateMedicalSpeciality(
         [FromBody] CreateMedicalSpecialityDto createMedicalSpecialityDto
     )
     {
@@ -151,7 +151,7 @@ public class MedicalSpecialityController : BaseController
     /// Update an existing medical speciality
     /// </summary>
     [HttpPut("{id}")]
-    public async Task<ActionResult<ApiResponse<MedicalSpecialityDto>>> UpdateMedicalSpeciality(
+    public async Task<IActionResult> UpdateMedicalSpeciality(
         int id,
         [FromBody] UpdateMedicalSpecialityDto updateMedicalSpecialityDto
     )
@@ -194,7 +194,7 @@ public class MedicalSpecialityController : BaseController
     /// Delete a medical speciality (soft delete)
     /// </summary>
     [HttpDelete("{id}")]
-    public async Task<ActionResult<ApiResponse>> DeleteMedicalSpeciality(int id)
+    public async Task<IActionResult> DeleteMedicalSpeciality(int id)
     {
         try
         {
@@ -211,7 +211,7 @@ public class MedicalSpecialityController : BaseController
     /// Check if a medical speciality exists by ID
     /// </summary>
     [HttpGet("{id}/exists")]
-    public async Task<ActionResult<ApiResponse<bool>>> CheckMedicalSpecialityExists(int id)
+    public async Task<IActionResult> CheckMedicalSpecialityExists(int id)
     {
         try
         {

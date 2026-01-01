@@ -26,7 +26,7 @@ public class ClinicController : BaseController
     /// Get all clinics with pagination and filtering
     /// </summary>
     [HttpGet]
-    public async Task<ActionResult<ApiResponse<PaginatedResult<ClinicDto>>>> GetAllClinics(
+    public async Task<IActionResult> GetAllClinics(
         [FromQuery] ClinicQueryDto query
     )
     {
@@ -77,7 +77,7 @@ public class ClinicController : BaseController
     /// Get a specific clinic by ID
     /// </summary>
     [HttpGet("{id}")]
-    public async Task<ActionResult<ApiResponse<ClinicDto>>> GetClinic(int id)
+    public async Task<IActionResult> GetClinic(int id)
     {
         try
         {
@@ -103,7 +103,7 @@ public class ClinicController : BaseController
     /// Create a new clinic
     /// </summary>
     [HttpPost]
-    public async Task<ActionResult<ApiResponse<ClinicDto>>> CreateClinic(
+    public async Task<IActionResult> CreateClinic(
         [FromBody] CreateClinicDto createClinicDto
     )
     {
@@ -148,7 +148,7 @@ public class ClinicController : BaseController
     /// Update an existing clinic
     /// </summary>
     [HttpPut("{id}")]
-    public async Task<ActionResult<ApiResponse<ClinicDto>>> UpdateClinic(
+    public async Task<IActionResult> UpdateClinic(
         int id,
         [FromBody] UpdateClinicDto updateClinicDto
     )
@@ -194,7 +194,7 @@ public class ClinicController : BaseController
     /// Delete a clinic (soft delete)
     /// </summary>
     [HttpDelete("{id}")]
-    public async Task<ActionResult<ApiResponse>> DeleteClinic(int id)
+    public async Task<IActionResult> DeleteClinic(int id)
     {
         try
         {
@@ -211,7 +211,7 @@ public class ClinicController : BaseController
     /// Get clinics by location ID
     /// </summary>
     [HttpGet("location/{locationId}")]
-    public async Task<ActionResult<ApiResponse<IEnumerable<ClinicDto>>>> GetClinicsByLocation(
+    public async Task<IActionResult> GetClinicsByLocation(
         int locationId
     )
     {
@@ -242,7 +242,7 @@ public class ClinicController : BaseController
     /// Check if a clinic exists by ID
     /// </summary>
     [HttpGet("{id}/exists")]
-    public async Task<ActionResult<ApiResponse<bool>>> CheckClinicExists(int id)
+    public async Task<IActionResult> CheckClinicExists(int id)
     {
         try
         {
@@ -259,7 +259,7 @@ public class ClinicController : BaseController
     /// Deactivate a clinic
     /// </summary>
     [HttpPatch("{id}/deactivate")]
-    public async Task<ActionResult<ApiResponse>> DeactivateClinic(int id)
+    public async Task<IActionResult> DeactivateClinic(int id)
     {
         try
         {
@@ -276,7 +276,7 @@ public class ClinicController : BaseController
     /// Activate a clinic
     /// </summary>
     [HttpPatch("{id}/activate")]
-    public async Task<ActionResult<ApiResponse>> ActivateClinic(int id)
+    public async Task<IActionResult> ActivateClinic(int id)
     {
         try
         {
@@ -293,7 +293,7 @@ public class ClinicController : BaseController
     /// Add a doctor to a clinic
     /// </summary>
     [HttpPost("{clinicId}/doctors")]
-    public async Task<ActionResult<ApiResponse<DoctorClinicDto>>> AddDoctorToClinic(
+    public async Task<IActionResult> AddDoctorToClinic(
         int clinicId,
         [FromBody] AddDoctorToClinicDto addDoctorDto
     )
@@ -330,7 +330,7 @@ public class ClinicController : BaseController
     /// Remove a doctor from a clinic (soft delete)
     /// </summary>
     [HttpDelete("{clinicId}/doctors/{doctorId}")]
-    public async Task<ActionResult<ApiResponse>> RemoveDoctorFromClinic(int clinicId, int doctorId)
+    public async Task<IActionResult> RemoveDoctorFromClinic(int clinicId, int doctorId)
     {
         try
         {
@@ -347,7 +347,7 @@ public class ClinicController : BaseController
     /// Get all doctors in a clinic
     /// </summary>
     [HttpGet("{clinicId}/doctors")]
-    public async Task<ActionResult<ApiResponse<IEnumerable<DoctorClinicDto>>>> GetClinicDoctors(
+    public async Task<IActionResult> GetClinicDoctors(
         int clinicId
     )
     {

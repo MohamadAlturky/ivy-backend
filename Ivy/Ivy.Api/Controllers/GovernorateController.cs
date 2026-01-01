@@ -1,4 +1,6 @@
-using System.Runtime.CompilerServices;
+using Ivy.Contracts.Models;
+using Ivy.Contracts.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ivy.Api.Controllers;
 
@@ -17,251 +19,72 @@ public class GovernorateController : BaseController
         _governorateService = governorateService;
     }
 
-    /// <summary>
-    /// Get all governorates with pagination and filtering
-    /// </summary>
     [HttpGet]
-    public async Task<
-        ActionResult<ApiResponse<PaginatedResult<GovernorateDto>>>
-    > GetAllGovernorates([FromQuery] GovernorateQueryDto query)
-    {
-        try
-        {
-            var result = await _governorateService.GetAllAsync(
-                query.Page,
-                query.PageSize,
-                query.Name,
-                query.Name,
-                query.IsActive,
-                query.IncludeCities
-            );
-
-            if (result.Success)
-            {
-                var governorateDtos = result.Data.Data.Select(g =>
-                    MapToDto(g, query.IncludeCities, this.GetLanguage())
-                );
-                var paginatedDto = new PaginatedResult<GovernorateDto>
-                {
-                    Data = governorateDtos,
-                    TotalCount = result.Data.TotalCount,
-                    Page = result.Data.Page,
-                    PageSize = result.Data.PageSize,
-                    TotalPages = result.Data.TotalPages,
-                    HasNextPage = result.Data.HasNextPage,
-                    HasPreviousPage = result.Data.HasPreviousPage,
-                };
-
-                var mappedResult = Result<PaginatedResult<GovernorateDto>>.Ok(
-                    result.MessageCode,
-                    paginatedDto
-                );
-                return HandleResult(mappedResult);
-            }
-
-            var failedResult = Result<PaginatedResult<GovernorateDto>>.Error(
-                result.MessageCode,
-                default!
-            );
-            return HandleResult(failedResult);
-        }
-        catch (Exception ex)
-        {
-            return HandleInternalError<PaginatedResult<GovernorateDto>>(
-                ex,
-                "retrieving governorates"
-            );
-        }
-    }
-
-    /// <summary>
-    /// Get a specific governorate by ID
-    /// </summary>
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ApiResponse<GovernorateDto>>> GetGovernorate(
-        int id,
-        [FromQuery] bool includeCities = false
+    public async Task<IActionResult> GetAllGovernorates(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? name = null,
+        [FromQuery] bool? isActive = null
     )
     {
-        try
-        {
-            var result = await _governorateService.GetByIdAsync(id, includeCities);
-
-            if (result.Success)
-            {
-                var governorateDto = MapToDto(result.Data, includeCities, this.GetLanguage());
-                var mappedResult = Result<GovernorateDto>.Ok(result.MessageCode, governorateDto);
-                return HandleResult(mappedResult);
-            }
-
-            var failedResult = Result<GovernorateDto>.Error(result.MessageCode, default!);
-            return HandleResult(failedResult);
-        }
-        catch (Exception ex)
-        {
-            return HandleInternalError<GovernorateDto>(ex, $"retrieving governorate with ID {id}");
-        }
+        var result = await _governorateService.GetAllAsync(
+            page: page,
+            pageSize: pageSize,
+            name: name,
+            isActive: isActive
+        );
+        return HandleResult(result);
     }
 
-    /// <summary>
-    /// Create a new governorate
-    /// </summary>
+    [HttpGet("localized")]
+    public async Task<IActionResult> GetAllLocalizedGovernorates(
+        [FromQuery] string language = "en",
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? name = null,
+        [FromQuery] bool? isActive = null
+    )
+    {
+        var result = await _governorateService.GetAllLocalizedAsync(
+            language: language,
+            page: page,
+            pageSize: pageSize,
+            name: name,
+            isActive: isActive
+        );
+        return HandleResult(result);
+    }
+
     [HttpPost]
-    public async Task<ActionResult<ApiResponse<GovernorateDto>>> CreateGovernorate(
+    public async Task<IActionResult> CreateGovernorate(
         [FromBody] CreateGovernorateDto createGovernorateDto
     )
     {
-        try
-        {
-            if (!IsModelValid())
-            {
-                return HandleValidationError<GovernorateDto>();
-            }
-
-            var governorate = new Governorate
-            {
-                NameAr = createGovernorateDto.NameAr,
-                NameEn = createGovernorateDto.NameEn,
-                IsActive = createGovernorateDto.IsActive,
-            };
-
-            var result = await _governorateService.CreateAsync(governorate);
-
-            if (result.Success)
-            {
-                var governorateDto = MapToDto(result.Data, false, this.GetLanguage());
-                var mappedResult = Result<GovernorateDto>.Ok(result.MessageCode, governorateDto);
-                return HandleResult(mappedResult);
-            }
-
-            var failedResult = Result<GovernorateDto>.Error(result.MessageCode, default!);
-            return HandleResult(failedResult);
-        }
-        catch (Exception ex)
-        {
-            return HandleInternalError<GovernorateDto>(ex, "creating governorate");
-        }
+        var result = await _governorateService.CreateAsync(createGovernorateDto);
+        return HandleResult(result);
     }
 
-    /// <summary>
-    /// Update an existing governorate
-    /// </summary>
     [HttpPut("{id}")]
-    public async Task<ActionResult<ApiResponse<GovernorateDto>>> UpdateGovernorate(
+    public async Task<IActionResult> UpdateGovernorate(
         int id,
         [FromBody] UpdateGovernorateDto updateGovernorateDto
     )
     {
-        try
-        {
-            if (!IsModelValid())
-            {
-                return HandleValidationError<GovernorateDto>();
-            }
-
-            var governorate = new Governorate
-            {
-                NameAr = updateGovernorateDto.NameAr,
-                NameEn = updateGovernorateDto.NameEn,
-                IsActive = updateGovernorateDto.IsActive,
-            };
-
-            var result = await _governorateService.UpdateAsync(id, governorate);
-
-            if (result.Success)
-            {
-                var governorateDto = MapToDto(result.Data, false, this.GetLanguage());
-                var mappedResult = Result<GovernorateDto>.Ok(result.MessageCode, governorateDto);
-                return HandleResult(mappedResult);
-            }
-
-            var failedResult = Result<GovernorateDto>.Error(result.MessageCode, default!);
-            return HandleResult(failedResult);
-        }
-        catch (Exception ex)
-        {
-            return HandleInternalError<GovernorateDto>(ex, $"updating governorate with ID {id}");
-        }
+        var result = await _governorateService.UpdateAsync(id, updateGovernorateDto);
+        return HandleResult(result);
     }
 
-    /// <summary>
-    /// Delete a governorate (soft delete)
-    /// </summary>
+    [HttpPut("{id}/toggle-status")]
+    public async Task<IActionResult> ToggleStatus(int id)
+    {
+        var result = await _governorateService.ToggleStatusAsync(id);
+        return HandleResult(result);
+    }
+
     [HttpDelete("{id}")]
-    public async Task<ActionResult<ApiResponse>> DeleteGovernorate(int id)
+    public async Task<IActionResult> DeleteGovernorate(int id)
     {
-        try
-        {
-            var result = await _governorateService.DeleteAsync(id);
-            return HandleResult(result);
-        }
-        catch (Exception ex)
-        {
-            return HandleInternalError(ex, $"deleting governorate with ID {id}");
-        }
-    }
-
-    /// <summary>
-    /// Check if a governorate exists by ID
-    /// </summary>
-    [HttpGet("{id}/exists")]
-    public async Task<ActionResult<ApiResponse<bool>>> CheckGovernorateExists(int id)
-    {
-        try
-        {
-            var result = await _governorateService.ExistsAsync(id);
-            return HandleResult(result);
-        }
-        catch (Exception ex)
-        {
-            return HandleInternalError<bool>(ex, $"checking if governorate exists with ID {id}");
-        }
-    }
-
-    /// <summary>
-    /// Get the count of cities in a governorate
-    /// </summary>
-    [HttpGet("{id}/cities/count")]
-    public async Task<ActionResult<ApiResponse<int>>> GetCitiesCount(int id)
-    {
-        try
-        {
-            var result = await _governorateService.GetCitiesCountAsync(id);
-            return HandleResult(result);
-        }
-        catch (Exception ex)
-        {
-            return HandleInternalError<int>(ex, $"getting cities count for governorate {id}");
-        }
-    }
-
-    private static GovernorateDto MapToDto(Governorate governorate, bool includeCities, string language)
-    {
-        var dto = new GovernorateDto
-        {
-            Id = governorate.Id,
-            Name = language == "ar" ? governorate.NameAr : governorate.NameEn,
-            IsActive = governorate.IsActive,
-            CreatedAt = governorate.CreatedAt,
-            UpdatedAt = governorate.UpdatedAt,
-        };
-
-        if (includeCities && governorate.Cities != null)
-        {
-            dto.Cities = governorate
-                .Cities.Select(city => new CityDto
-                {
-                    Id = city.Id,
-                    NameAr = city.NameAr,
-                    NameEn = city.NameEn,
-                    GovernorateId = city.GovernorateId,
-                    IsActive = city.IsActive,
-                    CreatedAt = city.CreatedAt,
-                    UpdatedAt = city.UpdatedAt,
-                })
-                .ToList();
-        }
-
-        return dto;
+        var result = await _governorateService.DeleteAsync(id);
+        return HandleResult(result);
     }
 }
