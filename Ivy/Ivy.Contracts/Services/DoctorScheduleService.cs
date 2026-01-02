@@ -14,7 +14,7 @@ public interface IDoctorScheduleService
     Task<Result<PaginatedResult<DoctorWorkingTimesDto>>> GetWorkingHoursAsync(
         int? doctorId,
         int? clinicId,
-        string? language,
+        string language,
         string? searchKey,
         int page = 1,
         int pageSize = 10
@@ -117,7 +117,7 @@ public class DoctorScheduleService : IDoctorScheduleService
     public async Task<Result<PaginatedResult<DoctorWorkingTimesDto>>> GetWorkingHoursAsync(
         int? doctorId,
         int? clinicId,
-        string? language,
+        string language,
         string? searchKey,
         int page = 1,
         int pageSize = 10
