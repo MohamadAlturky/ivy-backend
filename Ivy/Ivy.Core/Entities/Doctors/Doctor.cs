@@ -4,7 +4,9 @@ public class Doctor
 {
     public int UserId { get; set; }
     public User User { get; set; } = null!;
-    public string ProfileImageUrl { get; set; } = null!;
+    public string ProfileImageUrl { get; set; } = string.Empty;
+    public string DisplayNameAr { get; set; } = string.Empty;
+    public string DisplayNameEn { get; set; } = string.Empty;
     public ICollection<DoctorDynamicProfileHistory> DoctorDynamicProfileHistories { get; set; } =
         [];
 }
