@@ -19,6 +19,8 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
             .HasForeignKey<Doctor>(d => d.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.Property(d => d.Rating).IsRequired().HasDefaultValue(3);
+
         // Configure table name
         builder.ToTable("Doctors");
     }

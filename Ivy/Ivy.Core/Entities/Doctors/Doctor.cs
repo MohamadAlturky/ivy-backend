@@ -7,7 +7,7 @@ public class Doctor
     public string ProfileImageUrl { get; set; } = string.Empty;
     public string DisplayNameAr { get; set; } = string.Empty;
     public string DisplayNameEn { get; set; } = string.Empty;
-    public double Rating { get; set; } = 5;
+    public double Rating { get; set; } = 3;
     public ICollection<DoctorDynamicProfileHistory> DoctorDynamicProfileHistories { get; set; } =
         [];
 }
