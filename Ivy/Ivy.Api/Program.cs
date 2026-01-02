@@ -126,6 +126,7 @@ builder.Services.AddScoped<IAdminPermissionService, AdminPermissionService>();
 builder.Services.AddScoped<IClinicService, ClinicService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IDoctorClinicService, DoctorClinicService>();
+builder.Services.AddScoped<IDoctorScheduleService, DoctorScheduleService>();
 
 // Register OTP service as singleton
 builder.Services.AddSingleton<IOtpService>(provider => OtpService.Instance);
