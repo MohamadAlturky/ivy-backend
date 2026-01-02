@@ -36,6 +36,24 @@ public class DoctorClinicController : BaseController
         return HandleResult(result);
     }
 
+    [HttpGet("clinics/{clinicId}/doctors/localized")]
+    public async Task<IActionResult> GetDoctorsInClinicLocalized(
+        int clinicId,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? doctorName = null
+    )
+    {
+        var result = await _doctorClinicService.GetDoctorsInClinicLocalizedAsync(
+            clinicId,
+            GetLanguage(),
+            page,
+            pageSize,
+            doctorName
+        );
+        return HandleResult(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> AddDoctorToClinic(
         [FromBody] AddDoctorToClinicDto dto

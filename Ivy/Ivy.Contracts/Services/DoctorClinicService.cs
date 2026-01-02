@@ -14,6 +14,13 @@ public interface IDoctorClinicService
         int pageSize = 10,
         string? doctorName = null
     );
+    Task<Result<PaginatedResult<DoctorLocalizedDto>>> GetDoctorsInClinicLocalizedAsync(
+        int clinicId,
+        string language = "en",
+        int page = 1,
+        int pageSize = 10,
+        string? doctorName = null
+    );
 
     Task<Result> AddDoctorToClinicAsync(AddDoctorToClinicDto dto);
     Task<Result> RemoveDoctorFromClinicAsync(int doctorId, int clinicId);
@@ -91,6 +98,72 @@ public class DoctorClinicService : IDoctorClinicService
         var result = PaginatedResult<DoctorDto>.Create(items, totalCount, page, pageSize);
 
         return Result<PaginatedResult<DoctorDto>>.Ok(DoctorClinicMessageCodes.SUCCESS, result);
+    }
+
+    public async Task<Result<PaginatedResult<DoctorLocalizedDto>>> GetDoctorsInClinicLocalizedAsync(
+        int clinicId,
+        string language = "en",
+        int page = 1,
+        int pageSize = 10,
+        string? doctorName = null
+    )
+    {
+        // Query the Join Table
+        var query = _context
+            .Set<DoctorClinic>()
+            .Include(dc => dc.Doctor)
+            .ThenInclude(d => d.User)
+            .Include(dc => dc.Clinic)
+            .Where(dc => dc.ClinicId == clinicId)
+            .AsQueryable();
+
+        // Optional filtering by Doctor Name
+        if (!string.IsNullOrWhiteSpace(doctorName))
+        {
+            query = query.Where(x =>
+                x.Doctor.User.FirstName.Contains(doctorName)
+                || x.Doctor.User.LastName.Contains(doctorName)
+            );
+        }
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderBy(x => x.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => new DoctorLocalizedDto
+            {
+                Id = x.Doctor.UserId,
+                Rating = x.Doctor.Rating,
+                FullName = language == "ar" ? x.Doctor.DisplayNameAr : x.Doctor.DisplayNameEn,
+                ProfileImageUrl = x.Doctor.ProfileImageUrl,
+                Specialities = x
+                    .Doctor.DoctorDynamicProfileHistories.Where(h => h.IsLatest)
+                    .SelectMany(h => h.DoctorMedicalSpecialities)
+                    .Select(ms => new MedicalSpecialityLocalizedDto
+                    {
+                        Id = ms.MedicalSpeciality.Id,
+                        IsActive = ms.MedicalSpeciality.IsActive,
+                        Name =
+                            language == "ar"
+                                ? ms.MedicalSpeciality.NameAr
+                                : ms.MedicalSpeciality.NameEn,
+                        Description =
+                            language == "ar"
+                                ? ms.MedicalSpeciality.DescriptionAr
+                                : ms.MedicalSpeciality.DescriptionEn,
+                    })
+                    .ToList(),
+            })
+            .ToListAsync();
+
+        var result = PaginatedResult<DoctorLocalizedDto>.Create(items, totalCount, page, pageSize);
+
+        return Result<PaginatedResult<DoctorLocalizedDto>>.Ok(
+            DoctorClinicMessageCodes.SUCCESS,
+            result
+        );
     }
 
     public async Task<Result> AddDoctorToClinicAsync(AddDoctorToClinicDto dto)
