@@ -17,6 +17,7 @@ public class DoctorDto
     public Gender Gender { get; set; }
     public DateTime DateOfBirth { get; set; }
     public List<MedicalSpecialityDto> Specialities { get; set; } = [];
+    public required double Rating { get; set; }
 }
 
 public class CreateDoctorDto
@@ -56,4 +57,5 @@ public class DoctorLocalizedDto
     public string FullName { get; set; } = string.Empty;
     public List<MedicalSpecialityLocalizedDto> Specialities { get; set; } = [];
     public string ProfileImageUrl { get; set; } = string.Empty;
+    public required double Rating { get; set; }
 }

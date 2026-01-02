@@ -93,6 +93,7 @@ public class DoctorService : IDoctorService
                 Gender = x.User.Gender,
                 DisplayNameAr = x.DisplayNameAr,
                 DisplayNameEn = x.DisplayNameEn,
+                Rating = x.Rating,
                 DateOfBirth = x.User.DateOfBirth,
                 Specialities = x
                     .DoctorDynamicProfileHistories.Where(h => h.IsLatest)
@@ -102,6 +103,8 @@ public class DoctorService : IDoctorService
                         Id = ms.MedicalSpeciality.Id,
                         NameAr = ms.MedicalSpeciality.NameAr,
                         NameEn = ms.MedicalSpeciality.NameEn,
+                        DescriptionAr = ms.MedicalSpeciality.DescriptionAr,
+                        DescriptionEn = ms.MedicalSpeciality.DescriptionEn,
                     })
                     .ToList(),
             })
@@ -158,6 +161,7 @@ public class DoctorService : IDoctorService
                 Id = x.UserId,
                 FullName = language == "ar" ? x.DisplayNameAr : x.DisplayNameEn,
                 ProfileImageUrl = x.ProfileImageUrl,
+                Rating = x.Rating,
                 Specialities = x
                     .DoctorDynamicProfileHistories.Where(h => h.IsLatest)
                     .SelectMany(h => h.DoctorMedicalSpecialities)
@@ -168,6 +172,10 @@ public class DoctorService : IDoctorService
                             language == "ar"
                                 ? ms.MedicalSpeciality.NameAr
                                 : ms.MedicalSpeciality.NameEn,
+                        Description =
+                            language == "ar"
+                                ? ms.MedicalSpeciality.DescriptionAr
+                                : ms.MedicalSpeciality.DescriptionEn,
                     })
                     .ToList(),
             })
@@ -213,7 +221,13 @@ public class DoctorService : IDoctorService
         await _context.SaveChangesAsync(); // Save to generate UserId
 
         // 3. Create Doctor Entity
-        var doctor = new Doctor { UserId = user.Id, ProfileImageUrl = dto.ProfileImageUrl };
+        var doctor = new Doctor
+        {
+            UserId = user.Id,
+            ProfileImageUrl = dto.ProfileImageUrl,
+            DisplayNameAr = dto.DisplayNameAr,
+            DisplayNameEn = dto.DisplayNameEn,
+        };
 
         await _context.Set<Doctor>().AddAsync(doctor);
 
@@ -263,6 +277,8 @@ public class DoctorService : IDoctorService
         doctor.User.PhoneNumber = dto.PhoneNumber;
 
         // 2. Update Doctor Details
+        doctor.DisplayNameAr = dto.DisplayNameAr;
+        doctor.DisplayNameEn = dto.DisplayNameEn;
         doctor.ProfileImageUrl = dto.ProfileImageUrl;
 
         // 3. Handle History Versioning (Pattern: Archive old, Create new)
@@ -330,6 +346,7 @@ public class DoctorService : IDoctorService
                 MiddleName = x.User.MiddleName,
                 LastName = x.User.LastName,
                 Email = x.User.Email,
+                Rating = x.Rating,
                 PhoneNumber = x.User.PhoneNumber,
                 ProfileImageUrl = x.ProfileImageUrl,
                 Gender = x.User.Gender,
@@ -342,6 +359,8 @@ public class DoctorService : IDoctorService
                         Id = ms.MedicalSpeciality.Id,
                         NameAr = ms.MedicalSpeciality.NameAr,
                         NameEn = ms.MedicalSpeciality.NameEn,
+                        DescriptionAr = ms.MedicalSpeciality.DescriptionAr,
+                        DescriptionEn = ms.MedicalSpeciality.DescriptionEn,
                     })
                     .ToList(),
                 DisplayNameAr = x.DisplayNameAr,
