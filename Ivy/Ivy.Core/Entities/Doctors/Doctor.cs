@@ -10,4 +10,6 @@ public class Doctor
     public double Rating { get; set; } = 3;
     public ICollection<DoctorDynamicProfileHistory> DoctorDynamicProfileHistories { get; set; } =
         [];
+
+    public ICollection<DoctorClinic> DoctorClinics { get; set; } = [];
 }

@@ -37,12 +37,12 @@ public class DoctorClinicConfiguration : IEntityTypeConfiguration<DoctorClinic>
         builder.Property(dc => dc.ClinicId).IsRequired();
         builder
             .HasOne(dc => dc.Doctor)
-            .WithMany()
+            .WithMany(ff => ff.DoctorClinics)
             .HasForeignKey(dc => dc.DoctorId)
             .OnDelete(DeleteBehavior.Cascade);
         builder
             .HasOne(dc => dc.Clinic)
-            .WithMany()
+            .WithMany(ff => ff.DoctorClinics)
             .HasForeignKey(dc => dc.ClinicId)
             .OnDelete(DeleteBehavior.Cascade);
     }

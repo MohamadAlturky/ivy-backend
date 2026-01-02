@@ -6,6 +6,12 @@ public class TimeRangeDto
     public DateTime EndTime { get; set; }
 }
 
+public class TimeSegmentDto
+{
+    public TimeSpan StartTime { get; set; }
+    public TimeSpan EndTime { get; set; }
+}
+
 public class DoctorWorkingTimesDto
 {
     public int Id { get; set; }

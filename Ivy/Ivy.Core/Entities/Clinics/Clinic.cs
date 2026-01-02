@@ -11,4 +11,5 @@ public class Clinic : BaseEntity<int>
     public int LocationId { get; set; }
     public Location Location { get; set; } = null!;
     public ICollection<ClinicMedia> ClinicMedias { get; set; } = [];
+    public ICollection<DoctorClinic> DoctorClinics { get; set; } = [];
 }
