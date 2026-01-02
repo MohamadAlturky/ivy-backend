@@ -12,19 +12,11 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
 
         builder.Property(d => d.ProfileImageUrl).HasMaxLength(500).IsRequired();
 
-        builder.Property(d => d.IsProfileCompleted).IsRequired().HasDefaultValue(false);
-
         // Configure relationship with User
         builder
             .HasOne(d => d.User)
             .WithOne()
             .HasForeignKey<Doctor>(d => d.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder
-            .HasMany(d => d.DoctorMedicalSpecialities)
-            .WithOne(dms => dms.Doctor)
-            .HasForeignKey(dms => dms.DoctorId)
             .OnDelete(DeleteBehavior.Cascade);
 
         // Configure table name
@@ -105,6 +97,12 @@ public class DoctorDynamicProfileHistoryConfiguration
             .HasOne(dp => dp.Doctor)
             .WithMany(d => d.DoctorDynamicProfileHistories)
             .HasForeignKey(dp => dp.DoctorId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasMany(dp => dp.DoctorMedicalSpecialities)
+            .WithOne(dms => dms.DoctorDynamicProfileHistory)
+            .HasForeignKey(dms => dms.DoctorDynamicProfileHistoryId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -319,7 +319,6 @@ public class DoctorAuthController : BaseController
                 UpdatedAt = doctor.User.UpdatedAt,
             },
             ProfileImageUrl = doctor.ProfileImageUrl,
-            IsProfileCompleted = doctor.IsProfileCompleted,
         };
     }
 }

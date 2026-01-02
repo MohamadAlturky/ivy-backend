@@ -6,4 +6,5 @@ public class DoctorDynamicProfileHistory : BaseEntity<int>
     public Doctor Doctor { get; set; } = null!;
     public bool IsLatest { get; set; } = true;
     public string JsonData { get; set; } = "{}";
+    public ICollection<DoctorMedicalSpeciality> DoctorMedicalSpecialities { get; set; } = [];
 }

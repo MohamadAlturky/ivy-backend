@@ -95,7 +95,6 @@ public class DoctorAuthService : IDoctorAuthService
                 UserId = user.Id,
                 User = user,
                 ProfileImageUrl = string.Empty,
-                IsProfileCompleted = false
             };
 
             _context.Doctors.Add(doctor);
