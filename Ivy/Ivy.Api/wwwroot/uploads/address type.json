@@ -1,0 +1,44 @@
+{
+  "fullName": "string",
+  "phone": "string",
+  "email": "string",
+  "birthDate": "2026-01-13T12:14:54.023Z",
+  "gender": 0,
+  "address": {
+    //"customerAddressLocationType": 1
+    //office
+    "buildingName": "string",
+    "areaId": 0,
+    "areaInfo": "string",
+    "company": "string",
+    "floor": "string",//(optional)
+    "street": "string",
+    "phoneNumber": "string",//(optional)
+    "additionalDetails": "string",//(optional)
+    //"customerAddressLocationType": 2
+    //house
+    "house": "string",
+    "areaId": 0,
+    "areaInfo": "string",
+    "street": "string",
+    "block": "string",
+    "avenue": "string",//(optional)
+    "phoneNumber": "string",//(optional)
+    "additionalDetails": "string",//(optional)
+    //"customerAddressLocationType": 3
+    //Apartment
+    "buildingName": "string",
+    "areaId": 0,
+    "areaInfo": "string",
+    "apartment": "string",
+    "floor": "string",
+    "street": "string",
+    "block": "string",
+    "avenue": "string",
+    "additionalDetails": "string",
+    "buildingNumber": "string",
+
+
+
+  }
+}
