@@ -19,8 +19,6 @@ public class CreateClinicDto
     public string NameEn { get; set; } = string.Empty;
     public string DescriptionAr { get; set; } = string.Empty;
     public string DescriptionEn { get; set; } = string.Empty;
-    public string ContactPhoneNumber { get; set; } = string.Empty;
-    public string ContactEmail { get; set; } = string.Empty;
     public LocationPayLoadForClinicCreateOrUpdateDto Location { get; set; } = null!;
     public bool IsActive { get; set; } = true;
 }
