@@ -10,15 +10,19 @@ namespace Ivy.Contracts.Services;
 
 public interface IAdminService
 {
-    Task<Result<AdminLoginResponseDto>> LoginAsync(AdminLoginDto dto);
+    Task<Result<AdminLoginResponseDto>> LoginAsync(AdminLoginDto dto, string language = "en");
 
-    Task<Result<AdminDto>> GetProfileAsync(int adminId);
+    Task<Result<AdminDto>> GetProfileAsync(int adminId, string language = "en");
 
-    Task<Result<AdminDto>> UpdateProfileAsync(int adminId, UpdateAdminProfileDto dto);
+    Task<Result<AdminDto>> UpdateProfileAsync(
+        int adminId,
+        UpdateAdminProfileDto dto,
+        string language = "en"
+    );
 
-    Task<Result<bool>> EmailExistsAsync(string email);
+    Task<Result<bool>> EmailExistsAsync(string email, string language = "en");
 
-    Task<Result> ChangePasswordAsync(int adminId, ChangePasswordDto dto);
+    Task<Result> ChangePasswordAsync(int adminId, ChangePasswordDto dto, string language = "en");
 }
 
 public class AdminService : IAdminService
@@ -32,7 +36,10 @@ public class AdminService : IAdminService
         _jwtService = jwtService;
     }
 
-    public async Task<Result<AdminLoginResponseDto>> LoginAsync(AdminLoginDto dto)
+    public async Task<Result<AdminLoginResponseDto>> LoginAsync(
+        AdminLoginDto dto,
+        string language = "en"
+    )
     {
         if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
         {
@@ -45,6 +52,7 @@ public class AdminService : IAdminService
         // Find admin by email
         var admin = await _context
             .Set<Admin>()
+            .Include(a => a.Clinic)
             .FirstOrDefaultAsync(a => a.Email == dto.Email && !a.IsDeleted);
 
         if (admin == null)
@@ -81,6 +89,30 @@ public class AdminService : IAdminService
             Id = admin.Id,
             Email = admin.Email,
             IsActive = admin.IsActive,
+            IsClinicAdmin = admin.ClinicId != null,
+            Clinic =
+                admin.Clinic != null
+                    ? new ClinicLocalizedDto
+                    {
+                        Id = admin.Clinic.Id,
+                        Name = language == "ar" ? admin.Clinic.NameAr : admin.Clinic.NameEn,
+                        Description =
+                            language == "ar"
+                                ? admin.Clinic.DescriptionAr
+                                : admin.Clinic.DescriptionEn,
+                        ContactPhoneNumber = admin.Clinic.ContactPhoneNumber,
+                        ContactEmail = admin.Clinic.ContactEmail,
+                        Location = new LocationLocalizedDto
+                        {
+                            Id = admin.Clinic.LocationId,
+                            Name =
+                                language == "ar"
+                                    ? admin.Clinic.Location.NameAr
+                                    : admin.Clinic.Location.NameEn,
+                        },
+                        IsActive = admin.Clinic.IsActive,
+                    }
+                    : null,
             CreatedAt = admin.CreatedAt,
         };
 
@@ -95,7 +127,7 @@ public class AdminService : IAdminService
         );
     }
 
-    public async Task<Result<AdminDto>> GetProfileAsync(int adminId)
+    public async Task<Result<AdminDto>> GetProfileAsync(int adminId, string language = "en")
     {
         if (adminId <= 0)
         {
@@ -104,6 +136,7 @@ public class AdminService : IAdminService
 
         var admin = await _context
             .Set<Admin>()
+            .Include(a => a.Clinic)
             .FirstOrDefaultAsync(a => a.Id == adminId && !a.IsDeleted);
 
         if (admin == null)
@@ -121,12 +154,40 @@ public class AdminService : IAdminService
             Email = admin.Email,
             IsActive = admin.IsActive,
             CreatedAt = admin.CreatedAt,
+            IsClinicAdmin = admin.ClinicId != null,
+            Clinic =
+                admin.Clinic != null
+                    ? new ClinicLocalizedDto
+                    {
+                        Id = admin.Clinic.Id,
+                        Name = language == "ar" ? admin.Clinic.NameAr : admin.Clinic.NameEn,
+                        Description =
+                            language == "ar"
+                                ? admin.Clinic.DescriptionAr
+                                : admin.Clinic.DescriptionEn,
+                        ContactPhoneNumber = admin.Clinic.ContactPhoneNumber,
+                        ContactEmail = admin.Clinic.ContactEmail,
+                        Location = new LocationLocalizedDto
+                        {
+                            Id = admin.Clinic.LocationId,
+                            Name =
+                                language == "ar"
+                                    ? admin.Clinic.Location.NameAr
+                                    : admin.Clinic.Location.NameEn,
+                        },
+                        IsActive = admin.Clinic.IsActive,
+                    }
+                    : null,
         };
 
         return Result<AdminDto>.Ok(AdminServiceMessageCodes.PROFILE_RETRIEVED, adminDto);
     }
 
-    public async Task<Result<AdminDto>> UpdateProfileAsync(int adminId, UpdateAdminProfileDto dto)
+    public async Task<Result<AdminDto>> UpdateProfileAsync(
+        int adminId,
+        UpdateAdminProfileDto dto,
+        string language = "en"
+    )
     {
         if (adminId <= 0 || string.IsNullOrWhiteSpace(dto.Email))
         {
@@ -135,6 +196,7 @@ public class AdminService : IAdminService
 
         var entity = await _context
             .Set<Admin>()
+            .Include(a => a.Clinic)
             .FirstOrDefaultAsync(a => a.Id == adminId && !a.IsDeleted);
 
         if (entity == null)
@@ -187,12 +249,36 @@ public class AdminService : IAdminService
             Email = entity.Email,
             IsActive = entity.IsActive,
             CreatedAt = entity.CreatedAt,
+            IsClinicAdmin = entity.ClinicId != null,
+            Clinic =
+                entity.Clinic != null
+                    ? new ClinicLocalizedDto
+                    {
+                        Id = entity.Clinic.Id,
+                        Name = language == "ar" ? entity.Clinic.NameAr : entity.Clinic.NameEn,
+                        Description =
+                            language == "ar"
+                                ? entity.Clinic.DescriptionAr
+                                : entity.Clinic.DescriptionEn,
+                        ContactPhoneNumber = entity.Clinic.ContactPhoneNumber,
+                        ContactEmail = entity.Clinic.ContactEmail,
+                        Location = new LocationLocalizedDto
+                        {
+                            Id = entity.Clinic.LocationId,
+                            Name =
+                                language == "ar"
+                                    ? entity.Clinic.Location.NameAr
+                                    : entity.Clinic.Location.NameEn,
+                        },
+                        IsActive = entity.Clinic.IsActive,
+                    }
+                    : null,
         };
 
         return Result<AdminDto>.Ok(AdminServiceMessageCodes.UPDATED, resultDto);
     }
 
-    public async Task<Result<bool>> EmailExistsAsync(string email)
+    public async Task<Result<bool>> EmailExistsAsync(string email, string language = "en")
     {
         if (string.IsNullOrWhiteSpace(email))
         {
@@ -204,7 +290,11 @@ public class AdminService : IAdminService
         return Result<bool>.Ok(AdminServiceMessageCodes.EMAIL_CHECK_SUCCESS, exists);
     }
 
-    public async Task<Result> ChangePasswordAsync(int adminId, ChangePasswordDto dto)
+    public async Task<Result> ChangePasswordAsync(
+        int adminId,
+        ChangePasswordDto dto,
+        string language = "en"
+    )
     {
         if (
             adminId <= 0
@@ -217,6 +307,7 @@ public class AdminService : IAdminService
 
         var entity = await _context
             .Set<Admin>()
+            .Include(a => a.Clinic)
             .FirstOrDefaultAsync(a => a.Id == adminId && !a.IsDeleted);
 
         if (entity == null)

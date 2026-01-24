@@ -7,4 +7,5 @@ public class AdminRole : BaseEntity<int>
     public string DescriptionAr { get; set; } = string.Empty;
     public string DescriptionEn { get; set; } = string.Empty;
     public List<RolePermissionsLink> RolePermissionsLinks { get; set; } = [];
+    public bool IsClinicRole { get; set; }
 }

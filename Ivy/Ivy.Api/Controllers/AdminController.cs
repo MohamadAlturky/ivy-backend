@@ -20,11 +20,9 @@ public class AdminController : BaseController
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(
-        [FromBody] AdminLoginDto loginDto
-    )
+    public async Task<IActionResult> Login([FromBody] AdminLoginDto loginDto)
     {
-        var result = await _adminService.LoginAsync(loginDto);
+        var result = await _adminService.LoginAsync(loginDto, GetLanguage());
         return HandleResult(result);
     }
 
@@ -32,18 +30,19 @@ public class AdminController : BaseController
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> GetProfile()
     {
-
-            var result = await _adminService.GetProfileAsync(GetUserId());
-            return HandleResult(result);
+        var result = await _adminService.GetProfileAsync(GetUserId(), GetLanguage());
+        return HandleResult(result);
     }
 
     [HttpPut("change-password")]
     [Authorize(Roles = "admin")]
-    public async Task<IActionResult> ChangePassword(
-        [FromBody] ChangePasswordDto changePasswordDto
-    )
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
     {
-        var result = await _adminService.ChangePasswordAsync(GetUserId(), changePasswordDto);
+        var result = await _adminService.ChangePasswordAsync(
+            GetUserId(),
+            changePasswordDto,
+            GetLanguage()
+        );
         return HandleResult(result);
     }
 }

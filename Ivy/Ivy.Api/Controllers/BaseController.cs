@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Ivy.Api.DTOs;
 using Ivy.Api.Services;
+using Ivy.Core.DataContext;
 using IvyBackend;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -139,5 +140,17 @@ public abstract class BaseController : ControllerBase
             return 0;
         }
         return userId;
+    }
+
+    [NonAction]
+    public async Task<int?> GetClinicId(IvyContext context)
+    {
+        var adminId = GetUserId();
+        var admin = await context.Set<Admin>().FindAsync(adminId);
+        if (admin == null)
+        {
+            return null;
+        }
+        return admin.ClinicId;
     }
 }

@@ -20,6 +20,8 @@ public class AdminDto
     public string Email { get; set; } = string.Empty;
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; }
+    public required bool IsClinicAdmin { get; set; }
+    public required ClinicLocalizedDto? Clinic { get; set; }
 }
 
 public class AdminLoginResponseDto
