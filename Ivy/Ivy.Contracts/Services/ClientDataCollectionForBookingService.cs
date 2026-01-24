@@ -102,8 +102,6 @@ public class ClientDataCollectionForBookingService : IClientDataCollectionForBoo
                 Id = x.Id,
                 Name = language == "ar" ? x.NameAr : x.NameEn,
                 Description = language == "ar" ? x.DescriptionAr : x.DescriptionEn,
-                ContactEmail = x.ContactEmail,
-                ContactPhoneNumber = x.ContactPhoneNumber,
                 Location = new LocationLocalizedDto
                 {
                     Id = x.Location.Id,

@@ -100,8 +100,6 @@ public class AdminService : IAdminService
                             language == "ar"
                                 ? admin.Clinic.DescriptionAr
                                 : admin.Clinic.DescriptionEn,
-                        ContactPhoneNumber = admin.Clinic.ContactPhoneNumber,
-                        ContactEmail = admin.Clinic.ContactEmail,
                         Location = new LocationLocalizedDto
                         {
                             Id = admin.Clinic.LocationId,
@@ -165,8 +163,6 @@ public class AdminService : IAdminService
                             language == "ar"
                                 ? admin.Clinic.DescriptionAr
                                 : admin.Clinic.DescriptionEn,
-                        ContactPhoneNumber = admin.Clinic.ContactPhoneNumber,
-                        ContactEmail = admin.Clinic.ContactEmail,
                         Location = new LocationLocalizedDto
                         {
                             Id = admin.Clinic.LocationId,
@@ -260,8 +256,6 @@ public class AdminService : IAdminService
                             language == "ar"
                                 ? entity.Clinic.DescriptionAr
                                 : entity.Clinic.DescriptionEn,
-                        ContactPhoneNumber = entity.Clinic.ContactPhoneNumber,
-                        ContactEmail = entity.Clinic.ContactEmail,
                         Location = new LocationLocalizedDto
                         {
                             Id = entity.Clinic.LocationId,

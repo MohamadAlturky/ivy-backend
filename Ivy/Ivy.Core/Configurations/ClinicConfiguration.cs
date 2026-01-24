@@ -34,10 +34,6 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
 
         builder.Property(c => c.DescriptionEn).IsRequired().HasMaxLength(1000);
 
-        builder.Property(c => c.ContactPhoneNumber).IsRequired().HasMaxLength(20);
-
-        builder.Property(c => c.ContactEmail).IsRequired().HasMaxLength(255);
-
         builder.Property(c => c.LocationId).IsRequired();
 
         // Relationship Configuration
@@ -64,10 +60,6 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
 
         builder.HasIndex(c => c.IsDeleted).HasDatabaseName("IX_Clinics_IsDeleted");
 
-        builder
-            .HasIndex(c => c.ContactPhoneNumber)
-            .HasDatabaseName("IX_Clinics_ContactPhoneNumber");
-
         // Composite Index for unique clinic name per location
         builder
             .HasIndex(c => new { c.NameAr, c.LocationId })
@@ -78,12 +70,6 @@ public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
             .HasIndex(c => new { c.NameEn, c.LocationId })
             .IsUnique()
             .HasDatabaseName("IX_Clinics_NameEn_LocationId_Unique");
-
-        // Unique constraint for contact email
-        builder
-            .HasIndex(c => c.ContactEmail)
-            .IsUnique()
-            .HasDatabaseName("IX_Clinics_ContactEmail_Unique");
 
         // Global Query Filter for soft delete
         builder.HasQueryFilter(c => !c.IsDeleted);

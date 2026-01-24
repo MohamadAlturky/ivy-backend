@@ -74,8 +74,6 @@ public class ClinicService : IClinicService
                 NameEn = x.NameEn,
                 DescriptionAr = x.DescriptionAr,
                 DescriptionEn = x.DescriptionEn,
-                ContactPhoneNumber = x.ContactPhoneNumber,
-                ContactEmail = x.ContactEmail,
                 Location = new LocationDto
                 {
                     Id = x.LocationId,
@@ -120,8 +118,6 @@ public class ClinicService : IClinicService
             NameEn = dto.NameEn,
             DescriptionAr = dto.DescriptionAr,
             DescriptionEn = dto.DescriptionEn,
-            ContactPhoneNumber = dto.ContactPhoneNumber,
-            ContactEmail = dto.ContactEmail,
             Location = new Location
             {
                 NameAr = dto.Location.NameAr,
@@ -157,8 +153,6 @@ public class ClinicService : IClinicService
             NameEn = createdClinic.NameEn,
             DescriptionAr = createdClinic.DescriptionAr,
             DescriptionEn = createdClinic.DescriptionEn,
-            ContactPhoneNumber = createdClinic.ContactPhoneNumber,
-            ContactEmail = createdClinic.ContactEmail,
             Location = new LocationDto
             {
                 Id = createdClinic.LocationId,
@@ -206,8 +200,6 @@ public class ClinicService : IClinicService
         entity.NameEn = dto.NameEn;
         entity.DescriptionAr = dto.DescriptionAr;
         entity.DescriptionEn = dto.DescriptionEn;
-        entity.ContactPhoneNumber = dto.ContactPhoneNumber;
-        entity.ContactEmail = dto.ContactEmail;
         if (dto.Location != null)
         {
             entity.Location = new Location
@@ -245,8 +237,6 @@ public class ClinicService : IClinicService
             NameEn = updatedClinic.NameEn,
             DescriptionAr = updatedClinic.DescriptionAr,
             DescriptionEn = updatedClinic.DescriptionEn,
-            ContactPhoneNumber = updatedClinic.ContactPhoneNumber,
-            ContactEmail = updatedClinic.ContactEmail,
             Location = new LocationDto
             {
                 Id = updatedClinic.LocationId,
@@ -324,8 +314,6 @@ public class ClinicService : IClinicService
                 Id = x.Id,
                 Name = language == "ar" ? x.NameAr : x.NameEn,
                 Description = language == "ar" ? x.DescriptionAr : x.DescriptionEn,
-                ContactPhoneNumber = x.ContactPhoneNumber,
-                ContactEmail = x.ContactEmail,
                 Location = new LocationLocalizedDto
                 {
                     Id = x.LocationId,
