@@ -86,7 +86,12 @@ public class AdminService : IAdminService
 
         return Result<AdminLoginResponseDto>.Ok(
             AdminServiceMessageCodes.LOGIN_SUCCESS,
-            new AdminLoginResponseDto { Profile = adminDto, Token = token }
+            new AdminLoginResponseDto
+            {
+                Profile = adminDto,
+                Token = token,
+                IsClinicAdmin = admin.ClinicId != null,
+            }
         );
     }
 

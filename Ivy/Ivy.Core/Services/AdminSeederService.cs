@@ -16,7 +16,8 @@ public class AdminSeederService : IAdminSeederService
     public AdminSeederService(
         IvyContext context,
         IConfiguration configuration,
-        ILogger<AdminSeederService> logger)
+        ILogger<AdminSeederService> logger
+    )
     {
         _context = context;
         _configuration = configuration;
@@ -48,7 +49,7 @@ public class AdminSeederService : IAdminSeederService
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 IsActive = true,
-                IsDeleted = false
+                IsDeleted = false,
             };
 
             _context.Admins.Add(admin);
@@ -56,7 +57,8 @@ public class AdminSeederService : IAdminSeederService
 
             _logger.LogInformation(
                 "Default admin created successfully with email: {Email}",
-                defaultEmail);
+                defaultEmail
+            );
 
             return Result<bool>.Ok("DEFAULT_ADMIN_SEEDED_SUCCESS", true);
         }

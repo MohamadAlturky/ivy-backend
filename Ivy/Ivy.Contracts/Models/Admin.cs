@@ -26,6 +26,7 @@ public class AdminLoginResponseDto
 {
     public AdminDto Profile { get; set; } = null!;
     public string Token { get; set; } = string.Empty;
+    public bool IsClinicAdmin { get; set; }
 }
 
 public class AdminLoginDto
