@@ -56,9 +56,7 @@ public class ClinicController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateClinic(
-        [FromBody] CreateClinicDto createClinicDto
-    )
+    public async Task<IActionResult> CreateClinic([FromBody] CreateClinicDto createClinicDto)
     {
         var result = await _clinicService.CreateAsync(createClinicDto);
         return HandleResult(result);
