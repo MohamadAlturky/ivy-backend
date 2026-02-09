@@ -7,9 +7,7 @@ namespace Ivy.Core.DataContext;
 public class IvyContext : DbContext
 {
     public IvyContext(DbContextOptions<IvyContext> options)
-        : base(options)
-    {
-    }
+        : base(options) { }
 
     public DbSet<City> Cities { get; set; } = null!;
     public DbSet<Governorate> Governorates { get; set; } = null!;
@@ -22,6 +20,8 @@ public class IvyContext : DbContext
     public DbSet<Admin> Admins { get; set; } = null!;
     public DbSet<Doctor> Doctors { get; set; } = null!;
     public DbSet<DoctorClinic> DoctorClinics { get; set; } = null!;
+    public DbSet<MedicalHistory> MedicalHistories { get; set; } = null!;
+    public DbSet<MedicalHistoryItem> MedicalHistoryItems { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

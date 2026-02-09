@@ -1,15 +1,15 @@
+using System.Text;
 using Ivy.Api.Services;
+using Ivy.Contracts.Services;
 using Ivy.Core.DataContext;
 using Ivy.Core.Jwt;
 using Ivy.Core.Services;
 using IvyBackend.Services;
 using Mazad.Api;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Ivy.Contracts.Services;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +22,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
 
@@ -36,27 +34,28 @@ if (jwtSettings == null)
 }
 var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
+builder
+    .Services.AddAuthentication(options =>
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
-        ValidIssuer = jwtSettings.Issuer,
-        ValidateAudience = true,
-        ValidAudience = jwtSettings.Audience,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
-    };
-});
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = true,
+            ValidIssuer = jwtSettings.Issuer,
+            ValidateAudience = true,
+            ValidAudience = jwtSettings.Audience,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
+        };
+    });
 
 builder.Services.AddControllers();
 
@@ -127,10 +126,14 @@ builder.Services.AddScoped<IClinicService, ClinicService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IDoctorClinicService, DoctorClinicService>();
 builder.Services.AddScoped<IDoctorScheduleService, DoctorScheduleService>();
-builder.Services.AddScoped<IClientDataCollectionForBookingService, ClientDataCollectionForBookingService>();
+builder.Services.AddScoped<
+    IClientDataCollectionForBookingService,
+    ClientDataCollectionForBookingService
+>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<ICustomerAppointmentService, CustomerAppointmentService>();
 builder.Services.AddScoped<IClinicAppointmentService, ClinicAppointmentService>();
+builder.Services.AddScoped<IMedicalHistoryService, MedicalHistoryService>();
 
 // Register OTP service as singleton
 builder.Services.AddSingleton<IOtpService>(provider => OtpService.Instance);
