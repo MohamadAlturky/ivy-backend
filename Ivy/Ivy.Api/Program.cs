@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using Ivy.Api.Services;
 using Ivy.Contracts.Services;
@@ -100,9 +101,11 @@ builder.Services.AddSwaggerGen(c =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddAuthorization(options =>
 {
-    // options.AddPolicy("User", policy => policy.RequireClaim(ClaimTypes.Role, "User"));
+    options.AddPolicy("patient", policy => policy.RequireClaim(ClaimTypes.Role, "patient"));
 
-    // options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+    options.AddPolicy("admin", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
+
+    options.AddPolicy("doctor", policy => policy.RequireClaim(ClaimTypes.Role, "doctor"));
 });
 
 // Database Context

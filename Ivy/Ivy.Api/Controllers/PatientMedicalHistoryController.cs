@@ -1,5 +1,6 @@
 using Ivy.Contracts.Models;
 using Ivy.Contracts.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ivy.Api.Controllers;
@@ -20,6 +21,7 @@ public class PatientMedicalHistoryController : BaseController
     }
 
     [HttpGet]
+    [Authorize(Roles = "patient")]
     public async Task<IActionResult> GetPatientMedicalHistories()
     {
         var result = await _medicalHistoryService.GetByPatientIdAsync(GetUserId());
@@ -27,6 +29,7 @@ public class PatientMedicalHistoryController : BaseController
     }
 
     [HttpPost]
+    [Authorize(Roles = "patient")]
     public async Task<IActionResult> CreatePatientMedicalHistory(
         [FromBody] CreateMedicalHistoryForPatientDto createMedicalHistoryDto
     )
