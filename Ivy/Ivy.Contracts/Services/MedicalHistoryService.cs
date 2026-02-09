@@ -10,7 +10,10 @@ public interface IMedicalHistoryService
 {
     Task<Result<PaginatedResult<MedicalHistoryDto>>> GetAllAsync(MedicalHistoryQueryDto query);
     Task<Result<MedicalHistoryDto>> GetByIdAsync(int id);
-    Task<Result<List<MedicalHistoryDto>>> GetByPatientIdAsync(int patientId);
+    Task<Result<List<MedicalHistoryDto>>> GetByPatientIdAsync(
+        int patientId,
+        MedicalHistoryType? type
+    );
     Task<Result<MedicalHistoryDto>> CreateAsync(CreateMedicalHistoryDto dto);
     Task<Result<MedicalHistoryDto>> UpdateAsync(int id, UpdateMedicalHistoryDto dto);
     Task<Result> DeleteAsync(int id);
@@ -182,7 +185,10 @@ public class MedicalHistoryService : IMedicalHistoryService
         }
     }
 
-    public async Task<Result<List<MedicalHistoryDto>>> GetByPatientIdAsync(int patientId)
+    public async Task<Result<List<MedicalHistoryDto>>> GetByPatientIdAsync(
+        int patientId,
+        MedicalHistoryType? type
+    )
     {
         try
         {
@@ -191,6 +197,7 @@ public class MedicalHistoryService : IMedicalHistoryService
                 .Include(mh => mh.MedicalHistoryItems)
                 .Include(mh => mh.CreatedByUser)
                 .Where(mh => mh.PatientId == patientId)
+                .Where(mh => type == null || mh.Type == type)
                 .OrderByDescending(mh => mh.CreatedAt)
                 .Select(mh => new MedicalHistoryDto
                 {

@@ -22,9 +22,11 @@ public class PatientMedicalHistoryController : BaseController
 
     [HttpGet]
     [Authorize(Roles = "patient")]
-    public async Task<IActionResult> GetPatientMedicalHistories()
+    public async Task<IActionResult> GetPatientMedicalHistories(
+        [FromQuery] MedicalHistoryType? type
+    )
     {
-        var result = await _medicalHistoryService.GetByPatientIdAsync(GetUserId());
+        var result = await _medicalHistoryService.GetByPatientIdAsync(GetUserId(), type);
         return HandleResult(result);
     }
 
