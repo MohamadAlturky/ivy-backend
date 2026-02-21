@@ -224,3 +224,44 @@ public class ClinicAppointmentStatisticsDto
     public double CancellationRate { get; set; }
     public double NoShowRate { get; set; }
 }
+
+/// <summary>
+/// Filter DTO for doctor appointment queries
+/// </summary>
+public class DoctorAppointmentFilterDto
+{
+    /// <summary>
+    /// Page number (default: 1)
+    /// </summary>
+    public int Page { get; set; } = 1;
+
+    /// <summary>
+    /// Page size (default: 10, max: 100)
+    /// </summary>
+    public int PageSize { get; set; } = 10;
+
+    /// <summary>
+    /// Filter by patient ID
+    /// </summary>
+    public int? PatientId { get; set; }
+
+    /// <summary>
+    /// Filter by clinic ID
+    /// </summary>
+    public int? ClinicId { get; set; }
+
+    /// <summary>
+    /// Filter by appointment status
+    /// </summary>
+    public AppointmentStatus? Status { get; set; }
+
+    /// <summary>
+    /// Filter by appointment start date (from)
+    /// </summary>
+    public DateTime? StartDateFrom { get; set; }
+
+    /// <summary>
+    /// Filter by appointment start date (to)
+    /// </summary>
+    public DateTime? StartDateTo { get; set; }
+}

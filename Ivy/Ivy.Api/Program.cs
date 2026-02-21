@@ -135,6 +135,7 @@ builder.Services.AddScoped<
 >();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<ICustomerAppointmentService, CustomerAppointmentService>();
+builder.Services.AddScoped<IDoctorAppointmentService, DoctorAppointmentService>();
 builder.Services.AddScoped<IClinicAppointmentService, ClinicAppointmentService>();
 builder.Services.AddScoped<IMedicalHistoryService, MedicalHistoryService>();
 
