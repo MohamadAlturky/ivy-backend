@@ -560,6 +560,7 @@ public class AppointmentService : IAppointmentService
             AppointmentDateEnd = appointment.AppointmentDateEnd,
             Status = appointment.Status,
             Notes = appointment.Notes,
+            DoctorFeedbackOnSchedule = appointment.DoctorFeedbackOnSchedule,
         };
     }
 }

@@ -21,6 +21,7 @@ public class Appointment : BaseEntity<int>
     public DateTime AppointmentDateEnd { get; set; }
     public AppointmentStatus Status { get; set; } = AppointmentStatus.Pending;
     public string Notes { get; set; } = string.Empty;
+    public string? DoctorFeedbackOnSchedule { get; set; }
 }
 
 public enum AppointmentStatus

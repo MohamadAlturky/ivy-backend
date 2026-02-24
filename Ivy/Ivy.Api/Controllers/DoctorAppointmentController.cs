@@ -133,4 +133,30 @@ public class DoctorAppointmentController : BaseController
         var result = await _doctorAppointmentService.CompleteAppointmentAsync(doctorId, id);
         return HandleResult(result);
     }
+
+    /// <summary>
+    /// Set the doctor's feedback on the appointment schedule
+    /// </summary>
+    /// <param name="id">Appointment ID</param>
+    /// <param name="dto">Feedback content (DoctorFeedbackOnSchedule can be null or empty to clear)</param>
+    /// <returns>Updated appointment details</returns>
+    [HttpPut("{id}/feedback")]
+    public async Task<IActionResult> SetDoctorFeedbackOnSchedule(
+        int id,
+        [FromBody] DoctorFeedbackOnScheduleDto dto
+    )
+    {
+        var doctorId = GetUserId();
+        if (doctorId == 0)
+        {
+            return Unauthorized();
+        }
+
+        var result = await _doctorAppointmentService.SetDoctorFeedbackOnScheduleAsync(
+            doctorId,
+            id,
+            dto?.DoctorFeedbackOnSchedule
+        );
+        return HandleResult(result);
+    }
 }

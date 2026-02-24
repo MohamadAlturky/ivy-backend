@@ -43,6 +43,15 @@ public interface IDoctorAppointmentService
     /// Mark an appointment as completed
     /// </summary>
     Task<Result<AppointmentResponseDto>> CompleteAppointmentAsync(int doctorId, int appointmentId);
+
+    /// <summary>
+    /// Set the doctor's feedback on schedule for an appointment
+    /// </summary>
+    Task<Result<AppointmentResponseDto>> SetDoctorFeedbackOnScheduleAsync(
+        int doctorId,
+        int appointmentId,
+        string? feedback
+    );
 }
 
 public class DoctorAppointmentService : IDoctorAppointmentService
@@ -359,6 +368,42 @@ public class DoctorAppointmentService : IDoctorAppointmentService
         );
     }
 
+    public async Task<Result<AppointmentResponseDto>> SetDoctorFeedbackOnScheduleAsync(
+        int doctorId,
+        int appointmentId,
+        string? feedback
+    )
+    {
+        var appointment = await GetAppointmentForUpdateAsync(doctorId, appointmentId);
+        if (appointment == null)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_NOT_FOUND,
+                null!
+            );
+        }
+
+        if (appointment.Status == AppointmentStatus.Cancelled)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_ALREADY_CANCELLED,
+                null!
+            );
+        }
+
+        appointment.DoctorFeedbackOnSchedule = string.IsNullOrWhiteSpace(feedback)
+            ? null
+            : feedback.Trim();
+        await _context.SaveChangesAsync();
+
+        var response = MapToResponseDto(appointment);
+
+        return Result<AppointmentResponseDto>.Ok(
+            DoctorAppointmentServiceMessageCodes.APPOINTMENT_FEEDBACK_SET_SUCCESS,
+            response
+        );
+    }
+
     private async Task<Appointment?> GetAppointmentForUpdateAsync(int doctorId, int appointmentId)
     {
         return await _context
@@ -387,6 +432,7 @@ public class DoctorAppointmentService : IDoctorAppointmentService
             AppointmentDateEnd = appointment.AppointmentDateEnd,
             Status = appointment.Status,
             Notes = appointment.Notes,
+            DoctorFeedbackOnSchedule = appointment.DoctorFeedbackOnSchedule,
         };
     }
 }
@@ -399,6 +445,7 @@ public static class DoctorAppointmentServiceMessageCodes
     public const string APPOINTMENT_CANCELLED_SUCCESS = "DOCTOR_APPOINTMENT_CANCELLED_SUCCESS";
     public const string APPOINTMENT_IN_PROGRESS_SUCCESS = "DOCTOR_APPOINTMENT_IN_PROGRESS_SUCCESS";
     public const string APPOINTMENT_COMPLETED_SUCCESS = "DOCTOR_APPOINTMENT_COMPLETED_SUCCESS";
+    public const string APPOINTMENT_FEEDBACK_SET_SUCCESS = "DOCTOR_APPOINTMENT_FEEDBACK_SET_SUCCESS";
 
     // Error codes
     public const string APPOINTMENTS_RETRIEVAL_FAILED = "DOCTOR_APPOINTMENTS_RETRIEVAL_FAILED";

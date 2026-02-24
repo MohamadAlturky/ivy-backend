@@ -52,6 +52,7 @@ public class AppointmentResponseDto
     public DateTime AppointmentDateEnd { get; set; }
     public AppointmentStatus Status { get; set; }
     public string Notes { get; set; } = string.Empty;
+    public string? DoctorFeedbackOnSchedule { get; set; }
 }
 
 public class AppointmentFilterDto
@@ -223,6 +224,17 @@ public class ClinicAppointmentStatisticsDto
     public double CompletionRate { get; set; }
     public double CancellationRate { get; set; }
     public double NoShowRate { get; set; }
+}
+
+/// <summary>
+/// DTO for doctor to specify feedback on schedule for an appointment
+/// </summary>
+public class DoctorFeedbackOnScheduleDto
+{
+    /// <summary>
+    /// The doctor's feedback on the appointment schedule (can be null or empty to clear)
+    /// </summary>
+    public string? DoctorFeedbackOnSchedule { get; set; }
 }
 
 /// <summary>

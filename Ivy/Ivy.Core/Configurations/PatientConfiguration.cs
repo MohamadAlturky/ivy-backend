@@ -35,6 +35,7 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.Property(a => a.AppointmentDateEnd).IsRequired();
         builder.Property(a => a.Status).IsRequired();
         builder.Property(a => a.Notes).HasMaxLength(500);
+        builder.Property(a => a.DoctorFeedbackOnSchedule).HasMaxLength(500);
         builder
             .HasOne(a => a.Doctor)
             .WithMany()
