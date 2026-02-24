@@ -30,7 +30,9 @@ public class DoctorAppointmentController : BaseController
     /// <param name="filter">Filter parameters including pagination, status, and dates</param>
     /// <returns>Paginated list of doctor's appointments</returns>
     [HttpGet("my-appointments")]
-    public async Task<IActionResult> GetMyAppointments([FromQuery] DoctorAppointmentFilterDto filter)
+    public async Task<IActionResult> GetMyAppointments(
+        [FromQuery] DoctorAppointmentFilterDto filter
+    )
     {
         var doctorId = GetUserId();
         if (doctorId == 0)
@@ -75,6 +77,60 @@ public class DoctorAppointmentController : BaseController
         }
 
         var result = await _doctorAppointmentService.ConfirmAppointmentAsync(doctorId, id);
+        return HandleResult(result);
+    }
+
+    /// <summary>
+    /// Cancel an appointment
+    /// </summary>
+    /// <param name="id">Appointment ID</param>
+    /// <returns>Updated appointment details</returns>
+    [HttpPut("{id}/cancel")]
+    public async Task<IActionResult> CancelAppointment(int id)
+    {
+        var doctorId = GetUserId();
+        if (doctorId == 0)
+        {
+            return Unauthorized();
+        }
+
+        var result = await _doctorAppointmentService.CancelAppointmentAsync(doctorId, id);
+        return HandleResult(result);
+    }
+
+    /// <summary>
+    /// Set an appointment as in progress
+    /// </summary>
+    /// <param name="id">Appointment ID</param>
+    /// <returns>Updated appointment details</returns>
+    [HttpPut("{id}/in-progress")]
+    public async Task<IActionResult> SetAppointmentInProgress(int id)
+    {
+        var doctorId = GetUserId();
+        if (doctorId == 0)
+        {
+            return Unauthorized();
+        }
+
+        var result = await _doctorAppointmentService.SetAppointmentInProgressAsync(doctorId, id);
+        return HandleResult(result);
+    }
+
+    /// <summary>
+    /// Mark an appointment as completed
+    /// </summary>
+    /// <param name="id">Appointment ID</param>
+    /// <returns>Updated appointment details</returns>
+    [HttpPut("{id}/complete")]
+    public async Task<IActionResult> CompleteAppointment(int id)
+    {
+        var doctorId = GetUserId();
+        if (doctorId == 0)
+        {
+            return Unauthorized();
+        }
+
+        var result = await _doctorAppointmentService.CompleteAppointmentAsync(doctorId, id);
         return HandleResult(result);
     }
 }

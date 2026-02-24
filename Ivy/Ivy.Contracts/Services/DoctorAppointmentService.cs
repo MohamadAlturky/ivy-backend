@@ -28,6 +28,21 @@ public interface IDoctorAppointmentService
     /// Confirm an appointment
     /// </summary>
     Task<Result<AppointmentResponseDto>> ConfirmAppointmentAsync(int doctorId, int appointmentId);
+
+    /// <summary>
+    /// Cancel an appointment
+    /// </summary>
+    Task<Result<AppointmentResponseDto>> CancelAppointmentAsync(int doctorId, int appointmentId);
+
+    /// <summary>
+    /// Set an appointment as in progress
+    /// </summary>
+    Task<Result<AppointmentResponseDto>> SetAppointmentInProgressAsync(int doctorId, int appointmentId);
+
+    /// <summary>
+    /// Mark an appointment as completed
+    /// </summary>
+    Task<Result<AppointmentResponseDto>> CompleteAppointmentAsync(int doctorId, int appointmentId);
 }
 
 public class DoctorAppointmentService : IDoctorAppointmentService
@@ -160,14 +175,7 @@ public class DoctorAppointmentService : IDoctorAppointmentService
         int appointmentId
     )
     {
-        var appointment = await _context
-            .Set<Appointment>()
-            .Include(a => a.Doctor)
-            .ThenInclude(d => d.User)
-            .Include(a => a.Patient)
-            .ThenInclude(p => p.User)
-            .Include(a => a.Clinic)
-            .FirstOrDefaultAsync(a => a.Id == appointmentId && a.DoctorId == doctorId);
+        var appointment = await GetAppointmentForUpdateAsync(doctorId, appointmentId);
 
         if (appointment == null)
         {
@@ -212,6 +220,157 @@ public class DoctorAppointmentService : IDoctorAppointmentService
         );
     }
 
+    public async Task<Result<AppointmentResponseDto>> CancelAppointmentAsync(
+        int doctorId,
+        int appointmentId
+    )
+    {
+        var appointment = await GetAppointmentForUpdateAsync(doctorId, appointmentId);
+        if (appointment == null)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_NOT_FOUND,
+                null!
+            );
+        }
+
+        if (appointment.Status == AppointmentStatus.Cancelled)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_ALREADY_CANCELLED,
+                null!
+            );
+        }
+
+        if (appointment.Status == AppointmentStatus.Completed)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_ALREADY_COMPLETED,
+                null!
+            );
+        }
+
+        appointment.Status = AppointmentStatus.Cancelled;
+        await _context.SaveChangesAsync();
+
+        var response = MapToResponseDto(appointment);
+
+        return Result<AppointmentResponseDto>.Ok(
+            DoctorAppointmentServiceMessageCodes.APPOINTMENT_CANCELLED_SUCCESS,
+            response
+        );
+    }
+
+    public async Task<Result<AppointmentResponseDto>> SetAppointmentInProgressAsync(
+        int doctorId,
+        int appointmentId
+    )
+    {
+        var appointment = await GetAppointmentForUpdateAsync(doctorId, appointmentId);
+        if (appointment == null)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_NOT_FOUND,
+                null!
+            );
+        }
+
+        if (appointment.Status == AppointmentStatus.Cancelled)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_ALREADY_CANCELLED,
+                null!
+            );
+        }
+
+        if (appointment.Status == AppointmentStatus.Completed)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_ALREADY_COMPLETED,
+                null!
+            );
+        }
+
+        if (appointment.Status == AppointmentStatus.InProgress)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_ALREADY_IN_PROGRESS,
+                null!
+            );
+        }
+
+        appointment.Status = AppointmentStatus.InProgress;
+        await _context.SaveChangesAsync();
+
+        var response = MapToResponseDto(appointment);
+
+        return Result<AppointmentResponseDto>.Ok(
+            DoctorAppointmentServiceMessageCodes.APPOINTMENT_IN_PROGRESS_SUCCESS,
+            response
+        );
+    }
+
+    public async Task<Result<AppointmentResponseDto>> CompleteAppointmentAsync(
+        int doctorId,
+        int appointmentId
+    )
+    {
+        var appointment = await GetAppointmentForUpdateAsync(doctorId, appointmentId);
+        if (appointment == null)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_NOT_FOUND,
+                null!
+            );
+        }
+
+        if (appointment.Status == AppointmentStatus.Cancelled)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_ALREADY_CANCELLED,
+                null!
+            );
+        }
+
+        if (appointment.Status == AppointmentStatus.Completed)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_ALREADY_COMPLETED,
+                null!
+            );
+        }
+
+        if (appointment.Status != AppointmentStatus.InProgress)
+        {
+            return Result<AppointmentResponseDto>.Error(
+                DoctorAppointmentServiceMessageCodes.APPOINTMENT_MUST_BE_IN_PROGRESS,
+                null!
+            );
+        }
+
+        appointment.Status = AppointmentStatus.Completed;
+        await _context.SaveChangesAsync();
+
+        var response = MapToResponseDto(appointment);
+
+        return Result<AppointmentResponseDto>.Ok(
+            DoctorAppointmentServiceMessageCodes.APPOINTMENT_COMPLETED_SUCCESS,
+            response
+        );
+    }
+
+    private async Task<Appointment?> GetAppointmentForUpdateAsync(int doctorId, int appointmentId)
+    {
+        return await _context
+            .Set<Appointment>()
+            .Include(a => a.Doctor)
+            .ThenInclude(d => d.User)
+            .Include(a => a.Patient)
+            .ThenInclude(p => p.User)
+            .Include(a => a.Clinic)
+            .FirstOrDefaultAsync(a => a.Id == appointmentId && a.DoctorId == doctorId);
+    }
+
     private AppointmentResponseDto MapToResponseDto(Appointment appointment)
     {
         return new AppointmentResponseDto
@@ -237,6 +396,9 @@ public static class DoctorAppointmentServiceMessageCodes
     public const string SUCCESS = "DOCTOR_APPOINTMENT_SUCCESS";
     public const string APPOINTMENTS_RETRIEVED_SUCCESS = "DOCTOR_APPOINTMENTS_RETRIEVED_SUCCESS";
     public const string APPOINTMENT_CONFIRMED_SUCCESS = "DOCTOR_APPOINTMENT_CONFIRMED_SUCCESS";
+    public const string APPOINTMENT_CANCELLED_SUCCESS = "DOCTOR_APPOINTMENT_CANCELLED_SUCCESS";
+    public const string APPOINTMENT_IN_PROGRESS_SUCCESS = "DOCTOR_APPOINTMENT_IN_PROGRESS_SUCCESS";
+    public const string APPOINTMENT_COMPLETED_SUCCESS = "DOCTOR_APPOINTMENT_COMPLETED_SUCCESS";
 
     // Error codes
     public const string APPOINTMENTS_RETRIEVAL_FAILED = "DOCTOR_APPOINTMENTS_RETRIEVAL_FAILED";
@@ -244,4 +406,6 @@ public static class DoctorAppointmentServiceMessageCodes
     public const string APPOINTMENT_ALREADY_CANCELLED = "DOCTOR_APPOINTMENT_ALREADY_CANCELLED";
     public const string APPOINTMENT_ALREADY_COMPLETED = "DOCTOR_APPOINTMENT_ALREADY_COMPLETED";
     public const string APPOINTMENT_ALREADY_CONFIRMED = "DOCTOR_APPOINTMENT_ALREADY_CONFIRMED";
+    public const string APPOINTMENT_ALREADY_IN_PROGRESS = "DOCTOR_APPOINTMENT_ALREADY_IN_PROGRESS";
+    public const string APPOINTMENT_MUST_BE_IN_PROGRESS = "DOCTOR_APPOINTMENT_MUST_BE_IN_PROGRESS";
 }
